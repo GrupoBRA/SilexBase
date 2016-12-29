@@ -1,5 +1,4 @@
 <?php
-
 namespace OnyxERP\Core\Application;
 
 use InvalidArgumentException;
@@ -15,20 +14,22 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * PHP version 5.6
  *
- * @author    jfranciscos4 <silvaivctd@gmail.com>
+ * @author jfranciscos4 <silvaivctd@gmail.com>
  * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
  * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
  *
- * @version   1.6.2
+ * @version 1.6.2
  */
 abstract class ControllerProviderAbstract
 {
+
     /**
      * [$app description].
      *
      * @var \Silex\Application
      */
     private $app;
+
     /**
      * Response JSON.
      *
@@ -37,8 +38,8 @@ abstract class ControllerProviderAbstract
      * {@inheritdoc}
      *
      * @param array $resultados
-     * @param int   $statusErro
-     * @param int   $statusSucceso
+     * @param int $statusErro
+     * @param int $statusSucceso
      *
      * @return JsonResponse
      */
@@ -47,50 +48,24 @@ abstract class ControllerProviderAbstract
         $response = new JsonResponse();
 
         $response->setStatusCode($statusErro);
-        if (count($resultados) > 0 && !isset($resultados['error'])) {
+        if (count($resultados) > 0 && ! isset($resultados['error'])) {
             $response->setEncodingOptions(JSON_NUMERIC_CHECK);
-            $response->setData(
-                array(
-                    'status' => true,
-                    'data' => $resultados,
-                )
-            );
+            $response->setData(array(
+                'status' => true,
+                'data' => $resultados
+            ));
             $response->setStatusCode($statusSucceso);
         } else {
-            $response->setData(
-                array(
-                    'status' => false,
-                    'data' => $resultados,
-                )
-            );
+            $response->setData(array(
+                'status' => false,
+                'data' => $resultados
+            ));
         }
         $response->headers->set('Content-Type', 'UTF-8');
         $response->headers->set('Accept-Encoding', 'GZIP');
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return int
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function getUsuarioCod(Request $request)
-    {
-        $jwt = (new AuthService(new Application()))->getAuthorizationJWT($request);
-
-        $jwtExplode = \explode('.', $jwt);
-        $playload = \base64_decode($jwtExplode[1]);
-        $json = \json_decode($playload);
-
-        if (!isset($json->data->usuarioCod)) {
-            throw new InvalidArgumentException('UsuarioCod não existe');
-        }
-
-        return (int) $json->data->usuarioCod;
     }
 
     /**
@@ -106,7 +81,8 @@ abstract class ControllerProviderAbstract
     /**
      * Sets the [$app description].
      *
-     * @param \Silex\Application $app the app
+     * @param \Silex\Application $app
+     *            the app
      *
      * @return self
      */
