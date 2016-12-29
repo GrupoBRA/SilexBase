@@ -1,0 +1,17 @@
+## YAML Template.
+# version 1.0.0
+suites:
+    core_suite:
+        namespace: OnyxERP\Core
+        psr4_prefix: OnyxERP\Core
+        src_path: %paths.config%/src
+code_generation: true
+bootstrap: bootstrap.php
+formatter.name: pretty
+#extensions:
+#    PhpSpecCodeCoverage\CodeCoverageExtension:
+#        format: html
+#        output:
+#            html: build/coverage
+#            clover: build/coverage.xml
+    

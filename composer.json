@@ -1,0 +1,67 @@
+{
+	"name" : "braconsultoria/social-api",
+	"description" : "Social API",
+	"version" : "1.0.0",
+	"type" : "project",
+	"time" : "2016-12-09",
+	"homepage" : "https://github.com/BRAConsultoria/SocialAPI",
+	"license" : "proprietary",
+	"authors" : [{
+			"name" : "Jose Francisco da Silva IV",
+			"email" : "silvaivctd@gmail.com",
+			"homepage" : "https://github.com/jfranciscos4",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"email" : "suporte@grupobra.com",
+		"issues" : "https://github.com/BRAConsultoria/SocialAPI/issues",
+		"wiki" : "https://github.com/BRAConsultoria/SocialAPI/wiki"
+	},
+	"require" : {
+		"php" : ">=5.6",
+		"silex/silex" : "~2.0",
+		"symfony/config" : "^3.1",
+		"doctrine/dbal" : "2.*",
+		"symfony/doctrine-bridge" : "2.*",
+		"dflydev/doctrine-orm-service-provider" : "^2.0",
+		"symfony/validator" : "^3.1",
+		"nicolopignatelli/valueobjects" : "~2.0",
+		"phpseclib/phpseclib" : "2.0.4",
+		"guzzlehttp/guzzle" : "*"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"OnyxERP\\Core\\" : "src/"
+		},
+		"exclude-from-classmap" : [
+			"/Tests/",
+			"/test/",
+			"/tests/"
+		]
+	},
+	"require-dev" : {
+		"behat/behat" : "*",
+		"behat/mink-extension" : "*",
+		"behat/mink-goutte-driver" : "*",
+		"behat/mink-selenium2-driver" : "*",
+		"phpspec/phpspec" : "*",
+		"cnam/jwt-api-extension" : "0.0.1",
+		"phpunit/phpunit" : "*",
+		"squizlabs/php_codesniffer" : "*",
+		"pdepend/pdepend" : "*",
+		"phpunit/phpunit-mock-objects" : "*",
+		"qa-tools/qa-tools" : "*",
+		"phpmetrics/phpmetrics" : "*",
+		"phpmd/phpmd" : "*",
+		"phploc/phploc" : "*",
+		"sebastian/phpcpd" : "*",
+		"sebastian/phpdcd" : "*",
+		"friendsofphp/php-cs-fixer" : "*",
+		"phing/phing" : "*",
+		"theseer/phpdox" : "*"
+	},
+	"config" : {
+		"bin-dir" : "bin/"
+	}
+}
