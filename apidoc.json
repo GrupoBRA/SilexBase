@@ -1,7 +1,7 @@
 {
-  "name": "Social API REST Doc",
+  "name": "Nome da API",
   "version": "1.0.0",
-  "description": "ApiDoc para o SocialAPI",
-  "url" : "http://api.social.alpha.onyxapp.com.br/v1/"
+  "description": "Descrição da API",
+  "url" : "http://alpha.onyxapp.com/v1/"
 }
  
