@@ -1,10 +1,9 @@
 <?php
-
 namespace SocialAPI\Core\Application\Service;
 
-use Symfony\Component\HttpFoundation\Request;
-use OnyxERP\Core\Application\Service\ServiceAbstract;
-use GuzzleHttp\Client;
+use \Exception;
+use \Silex\Application;
+use \Symfony\Component\HttpFoundation\Request;
 
 /**
  * JWTService.
@@ -20,22 +19,29 @@ use GuzzleHttp\Client;
  *
  * @version 1.0.0
  */
-class JWTService extends ServiceAbstract
+class JWTService
 {
-    /** @var Client Instância do Guzzle */
-    private $guzzle;
 
-    public function __construct($app)
+    /**
+     *
+     * @var Application
+     */
+    private $app;
+
+    /**
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
     {
-        parent::__construct($app);
-        $this->guzzle = new Client();
+        $this->app = $app;
     }
 
     /**
      * Solicita a geração de um novo JWT à API responsável, com os dados informado em $dados.
      *
      * @param array $dados
-     *                     Dados a serem informados no payload do token
+     *            Dados a serem informados no payload do token
      *
      * @return string Token gerado
      *
@@ -44,11 +50,11 @@ class JWTService extends ServiceAbstract
     public function encode(array $dados)
     {
         try {
-            $response = $this->guzzle->post(\URL_JWT_API.'encode/', [
+            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'encode/', [
                 'body' => \json_encode([
                     'apiKey' => \base64_encode($dados['app']['apikey']),
-                    'data' => $dados,
-                ]),
+                    'data' => $dados
+                ])
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -65,7 +71,7 @@ class JWTService extends ServiceAbstract
      * Decodifica um JSON Web Token.
      *
      * @param string $jwt
-     *                    JSON Web Token
+     *            JSON Web Token
      *
      * @return array Dados do token decodificado
      *
@@ -74,10 +80,10 @@ class JWTService extends ServiceAbstract
     public function decode($jwt)
     {
         try {
-            $response = $this->guzzle->get(\URL_JWT_API.'decode/', [
+            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'decode/', [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -93,15 +99,15 @@ class JWTService extends ServiceAbstract
     /**
      * Adiciona dados em $dados a um token já existente.
      *
-     * @param array   $dados
-     *                         <code>
-     *                         //Dados a serem adicionados, para garantir a compatibilidade, deve seguir o formato
-     *                         $dados = [
-     *                         'key' => [
-     *                         'dados aqui'
-     *                         ]
-     *                         ];
-     *                         </code>
+     * @param array $dados
+     *            <code>
+     *            //Dados a serem adicionados, para garantir a compatibilidade, deve seguir o formato
+     *            $dados = [
+     *            'key' => [
+     *            'dados aqui'
+     *            ]
+     *            ];
+     *            </code>
      * @param Request $request
      *
      * @return string Token atualizado
@@ -111,13 +117,13 @@ class JWTService extends ServiceAbstract
     public function push(array $dados, $jwt)
     {
         try {
-            $response = $this->guzzle->post(\URL_JWT_API.'push/', [
+            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'push/', [
                 'body' => \json_encode([
-                    'data' => $dados,
+                    'data' => $dados
                 ]),
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -131,6 +137,7 @@ class JWTService extends ServiceAbstract
     }
 
     /**
+     *
      * @param string $jwt
      *
      * @return bool true em caso de token válido e ainda ativo
@@ -140,10 +147,10 @@ class JWTService extends ServiceAbstract
     public function checkJWT($jwt)
     {
         try {
-            $response = $this->guzzle->get(\URL_JWT_API.'check/', [
+            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'check/', [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -160,7 +167,7 @@ class JWTService extends ServiceAbstract
      * Retorna os dados no payload do token informado em $jwt, se este for válido.
      *
      * @param string $jwt
-     *                    JSON Web Token
+     *            JSON Web Token
      *
      * @return array Dados do token decodificado
      */
@@ -172,6 +179,7 @@ class JWTService extends ServiceAbstract
     }
 
     /**
+     *
      * @param Request $request
      *
      * @return array
@@ -189,7 +197,7 @@ class JWTService extends ServiceAbstract
      * Extrai o prefixo Bearer do token.
      *
      * @param string $authorization
-     *                              Authorization Header
+     *            Authorization Header
      *
      * @return string JSON Web Token tratado
      *
@@ -197,8 +205,8 @@ class JWTService extends ServiceAbstract
      */
     public function trataJWT($authorization)
     {
-        list($jwt) = \sscanf($authorization, 'Bearer %s');
-        if (!$jwt) {
+        list ($jwt) = \sscanf($authorization, 'Bearer %s');
+        if (! $jwt) {
             throw new \DomainException('Token não informado');
         }
 
@@ -209,12 +217,21 @@ class JWTService extends ServiceAbstract
      * Converte um objeto stdClass em um array associativo.
      *
      * @param StdClass $obj
-     *                      Objeto a ser convertido
+     *            Objeto a ser convertido
      *
      * @return array Objeto convertido em array
      */
     public function obj2array($obj)
     {
         return \json_decode(\json_encode($obj), true);
+    }
+
+    /**
+     *
+     * @return the Application
+     */
+    public function getApp()
+    {
+        return $this->app;
     }
 }

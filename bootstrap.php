@@ -19,17 +19,44 @@ error_reporting(E_ALL); // ...but do log them
 use \Silex\Application;
 use \Silex\Provider\ServiceControllerServiceProvider;
 use \Silex\Provider\ValidatorServiceProvider;
+use \Silex\Provider\MonologServiceProvider;
 use \Symfony\Component\Debug\ExceptionHandler;
 use \Symfony\Component\Debug\ErrorHandler;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\HttpFoundation\Response;
+use \OnyxERP\Core\Application\Service\GuzzleServiceProvider;
 
 $loader = require __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 $app = new Application();
 $app['debug'] = true;
+
 $app->register(new ServiceControllerServiceProvider());
+
 $app->register(new ValidatorServiceProvider());
+
+/**
+ * GuzzleServiceProvider
+ */
+$app['guzzle.timeout'] = 1.0;
+$app->register(new GuzzleServiceProvider(), array(
+    'guzzle.timeout' => 3.14,
+    'guzzle.request_options' => [
+        'auth' => [
+            'admin',
+            'admin'
+        ]
+    ]
+));
+
+/**
+ * MonologServiceProvider
+ */
+if ($app['debug']) {
+    $app->register(new MonologServiceProvider(), array(
+        'monolog.logfile' => __DIR__ . '/log/development.log'
+    ));
+}
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
