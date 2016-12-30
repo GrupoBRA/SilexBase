@@ -1,10 +1,10 @@
 {
-	"name" : "braconsultoria/social-api",
-	"description" : "Social API",
+	"name" : "onyxerp/silexbase",
+	"description" : "Silex Base",
 	"version" : "1.0.0",
 	"type" : "project",
 	"time" : "2016-12-09",
-	"homepage" : "https://github.com/BRAConsultoria/SocialAPI",
+	"homepage" : "https://github.com/BRAConsultoria/SilexBase",
 	"license" : "proprietary",
 	"authors" : [{
 			"name" : "Jose Francisco da Silva IV",
@@ -15,8 +15,8 @@
 	],
 	"support" : {
 		"email" : "suporte@grupobra.com",
-		"issues" : "https://github.com/BRAConsultoria/SocialAPI/issues",
-		"wiki" : "https://github.com/BRAConsultoria/SocialAPI/wiki"
+		"issues" : "https://github.com/BRAConsultoria/SilexBase/issues",
+		"wiki" : "https://github.com/BRAConsultoria/SilexBase/wiki"
 	},
 	"require" : {
 		"php" : ">=5.6",
