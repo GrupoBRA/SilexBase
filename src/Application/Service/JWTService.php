@@ -205,7 +205,7 @@ class JWTService
      */
     public function trataJWT($authorization)
     {
-        list ($jwt) = \sscanf($authorization, 'Bearer %s');
+        list($jwt) = \sscanf($authorization, 'Bearer %s');
         if (! $jwt) {
             throw new \DomainException('Token não informado');
         }

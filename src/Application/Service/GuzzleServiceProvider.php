@@ -26,7 +26,8 @@ class GuzzleServiceProvider implements ServiceProviderInterface
      *
      */
     public function boot(Container $app)
-    {}
+    {
+    }
 
     /**
      *
@@ -36,7 +37,6 @@ class GuzzleServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['guzzle'] = function ($app) {
-
             $this->setConfiguration($app);
             return new Client($this->configuration);
         };
