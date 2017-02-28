@@ -1,62 +1,63 @@
 {
-    "name": "onyxerp/silexbase",
-    "description": "Silex Base",
-    "version": "1.0.0",
-    "type": "project",
-    "time": "2016-12-09",
-    "homepage": "https://github.com/BRAConsultoria/SilexBase",
-    "license": "proprietary",
-    "authors": [{
-            "name": "Jose Francisco da Silva IV",
-            "email": "silvaivctd@gmail.com",
-            "homepage": "https://github.com/jfranciscos4",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "suporte@grupobra.com",
-        "issues": "https://github.com/BRAConsultoria/SilexBase/issues",
-        "wiki": "https://github.com/BRAConsultoria/SilexBase/wiki"
-    },
-    "require": {
-        "php": ">=5.6",
-        "silex/silex": "~2.0",
-        "symfony/config": "^3.1",
-        "symfony/validator": "^3.1",
-        "guzzlehttp/guzzle": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "OnyxERP\\Core\\": "src/"
-        },
-        "exclude-from-classmap": [
-            "/Tests/",
-            "/test/",
-            "/tests/"
-        ]
-    },
-    "require-dev": {
-        "behat/behat": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-goutte-driver": "*",
-        "behat/mink-selenium2-driver": "*",
-        "phpspec/phpspec": "*",
-        "phpunit/phpunit": "*",
-        "squizlabs/php_codesniffer": "*",
-        "pdepend/pdepend": "*",
-        "phpunit/phpunit-mock-objects": "*",
-        "qa-tools/qa-tools": "*",
-        "phpmetrics/phpmetrics": "*",
-        "phpmd/phpmd": "*",
-        "phploc/phploc": "*",
-        "sebastian/phpcpd": "*",
-        "sebastian/phpdcd": "*",
-        "friendsofphp/php-cs-fixer": "*",
-        "phing/phing": "*",
-        "theseer/phpdox": "*",
-        "cnam/jwt-api-extension": "*"
-    },
-    "config": {
-        "bin-dir": "bin/"
-    }
+	"name" : "onyxerp/silexbase",
+	"description" : "Silex Base",
+	"version" : "1.0.0",
+	"type" : "project",
+	"time" : "2016-12-09",
+	"homepage" : "https://github.com/BRAConsultoria/SilexBase",
+	"license" : "proprietary",
+	"authors" : [{
+			"name" : "Jose Francisco da Silva IV",
+			"email" : "silvaivctd@gmail.com",
+			"homepage" : "https://github.com/jfranciscos4",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"email" : "suporte@grupobra.com",
+		"issues" : "https://github.com/BRAConsultoria/SilexBase/issues",
+		"wiki" : "https://github.com/BRAConsultoria/SilexBase/wiki"
+	},
+	"require" : {
+		"php" : ">=5.6",
+		"silex/silex" : "~2.0",
+		"symfony/config" : "^3.1",
+		"symfony/validator" : "^3.1",
+		"guzzlehttp/guzzle" : "*",
+		"monolog/monolog" : "*"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"OnyxERP\\Core\\" : "src/"
+		},
+		"exclude-from-classmap" : [
+			"/Tests/",
+			"/test/",
+			"/tests/"
+		]
+	},
+	"require-dev" : {
+		"behat/behat" : "*",
+		"behat/mink-extension" : "*",
+		"behat/mink-goutte-driver" : "*",
+		"behat/mink-selenium2-driver" : "*",
+		"phpspec/phpspec" : "*",
+		"phpunit/phpunit" : "*",
+		"squizlabs/php_codesniffer" : "*",
+		"pdepend/pdepend" : "*",
+		"phpunit/phpunit-mock-objects" : "*",
+		"qa-tools/qa-tools" : "*",
+		"phpmetrics/phpmetrics" : "*",
+		"phpmd/phpmd" : "*",
+		"phploc/phploc" : "*",
+		"sebastian/phpcpd" : "*",
+		"sebastian/phpdcd" : "*",
+		"friendsofphp/php-cs-fixer" : "*",
+		"phing/phing" : "*",
+		"theseer/phpdox" : "*",
+		"cnam/jwt-api-extension" : "*"
+	},
+	"config" : {
+		"bin-dir" : "bin/"
+	}
 }

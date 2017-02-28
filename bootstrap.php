@@ -22,6 +22,8 @@ set_time_limit(300);
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use OnyxERP\Core\Application\Service\GuzzleServiceProvider;
+use OnyxERP\Core\Application\Service\JSONServiceProvider;
+use OnyxERP\Core\Application\Service\JWTService;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -59,7 +61,7 @@ $app['guzzle.timeout'] = 1.0;
 $app->register(new GuzzleServiceProvider(), array(
     'guzzle.timeout' => 3.14,
     'guzzle.request_options' => [
-        'exceptions' => false,
+        'exceptions' => false
     ]
 ));
 /**
@@ -77,6 +79,7 @@ if ($app['debug']) {
 }
 
 $app->error(function (Exception $e, Request $request, $code) use ($app) {
+    $response = [];
     $response['status'] = false;
 
     if ($app['debug']) {
@@ -87,7 +90,7 @@ $app->error(function (Exception $e, Request $request, $code) use ($app) {
 
         $response['request']['method'] = $request->getMethod();
         $response['request']['path_info'] = $request->getPathInfo();
-        $response['request']['content'] = $request->getContent();        
+        $response['request']['content'] = $request->getContent();
     }
     // ... logic to handle the error and return a Response
     switch ($code) {
@@ -125,28 +128,24 @@ $app->view(function (array $controllerResult, Request $request) use ($app) {
 $app->before(function (Request $request, Application $app) {
     $route = $request->get('_route');
     $listaRouteLiberada = array(
-        'OPTIONS_url',
-        'GET_v1_pessoa_fisica_',
-        'GET_v1_pessoa_fisica_id',
-        'GET_v1_pessoa_fisica_id_',
+        'OPTIONS_url'
     );
 
-    if (!in_array($route, $listaRouteLiberada)) {
+    if (! in_array($route, $listaRouteLiberada)) {
         try {
             $jwtService = new JWTService($app);
 
             return $jwtService->checkJWT($jwtService->getAuthorizationJWT($request));
         } catch (Exception $e) {
             return new JsonResponse([
-                'error' => $e->getMessage(),
+                'error' => $e->getMessage()
             ]);
         }
     }
 });
 
 $app->after(function (Request $request, Response $response) {
-    if ($request) {
-    }
+    if ($request) {}
     $response->headers->set('Accept-Encoding', 'GZIP');
     $response->headers->set('Content-Type', 'application/json');
     $response->headers->set('Content-Type', 'UTF-8');
@@ -161,9 +160,9 @@ $app->after(function (Request $request, Response $response) {
  */
 $app->match('{url}', function ($url) {
     return new JsonResponse([
-        'status' => 'Ok',
+        'status' => 'Ok'
     ], 200, [
-        'WWW-Authenticate' => 'Bearer',
+        'WWW-Authenticate' => 'Bearer'
     ]);
 })
     ->assert('url', '.*')
@@ -173,5 +172,5 @@ $app->match('{url}', function ($url) {
  *
  * basta adiciona uma nova linha para disponibilização de novos recursos REST API
  */
-$app->mount('/v1/pessoa-fisica', new PessoaFisicaControllerProvider());
+// $app->mount('/v1/pessoa-fisica', new PessoaFisicaControllerProvider());
 return $app;

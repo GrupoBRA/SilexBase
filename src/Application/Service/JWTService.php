@@ -1,6 +1,5 @@
 <?php
-
-namespace SocialAPI\Core\Application\Service;
+namespace OnyxERP\Core\Application\Service;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +20,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class JWTService
 {
+
     /**
+     *
      * @var Application
      */
     private $app;
 
     /**
+     *
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -38,7 +40,7 @@ class JWTService
      * Solicita a geração de um novo JWT à API responsável, com os dados informado em $dados.
      *
      * @param array $dados
-     *                     Dados a serem informados no payload do token
+     *            Dados a serem informados no payload do token
      *
      * @return string Token gerado
      *
@@ -47,11 +49,11 @@ class JWTService
     public function encode(array $dados)
     {
         try {
-            $response = $this->getApp()['guzzle']->post(\URL_JWT_API.'encode/', [
+            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'encode/', [
                 'body' => \json_encode([
                     'apiKey' => \base64_encode($dados['app']['apikey']),
-                    'data' => $dados,
-                ]),
+                    'data' => $dados
+                ])
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -68,7 +70,7 @@ class JWTService
      * Decodifica um JSON Web Token.
      *
      * @param string $jwt
-     *                    JSON Web Token
+     *            JSON Web Token
      *
      * @return array Dados do token decodificado
      *
@@ -77,10 +79,10 @@ class JWTService
     public function decode($jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->get(\URL_JWT_API.'decode/', [
+            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'decode/', [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -96,15 +98,15 @@ class JWTService
     /**
      * Adiciona dados em $dados a um token já existente.
      *
-     * @param array   $dados
-     *                         <code>
-     *                         //Dados a serem adicionados, para garantir a compatibilidade, deve seguir o formato
-     *                         $dados = [
-     *                         'key' => [
-     *                         'dados aqui'
-     *                         ]
-     *                         ];
-     *                         </code>
+     * @param array $dados
+     *            <code>
+     *            //Dados a serem adicionados, para garantir a compatibilidade, deve seguir o formato
+     *            $dados = [
+     *            'key' => [
+     *            'dados aqui'
+     *            ]
+     *            ];
+     *            </code>
      * @param Request $request
      *
      * @return string Token atualizado
@@ -114,13 +116,13 @@ class JWTService
     public function push(array $dados, $jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->post(\URL_JWT_API.'push/', [
+            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'push/', [
                 'body' => \json_encode([
-                    'data' => $dados,
+                    'data' => $dados
                 ]),
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -134,6 +136,7 @@ class JWTService
     }
 
     /**
+     *
      * @param string $jwt
      *
      * @return bool true em caso de token válido e ainda ativo
@@ -143,10 +146,10 @@ class JWTService
     public function checkJWT($jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->get(\URL_JWT_API.'check/', [
+            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'check/', [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$jwt,
-                ],
+                    'Authorization' => 'Bearer ' . $jwt
+                ]
             ]);
 
             if ($response->getStatusCode() === '200') {
@@ -163,7 +166,7 @@ class JWTService
      * Retorna os dados no payload do token informado em $jwt, se este for válido.
      *
      * @param string $jwt
-     *                    JSON Web Token
+     *            JSON Web Token
      *
      * @return array Dados do token decodificado
      */
@@ -175,6 +178,7 @@ class JWTService
     }
 
     /**
+     *
      * @param Request $request
      *
      * @return array
@@ -192,7 +196,7 @@ class JWTService
      * Extrai o prefixo Bearer do token.
      *
      * @param string $authorization
-     *                              Authorization Header
+     *            Authorization Header
      *
      * @return string JSON Web Token tratado
      *
@@ -200,8 +204,8 @@ class JWTService
      */
     public function trataJWT($authorization)
     {
-        list($jwt) = \sscanf($authorization, 'Bearer %s');
-        if (!$jwt) {
+        list ($jwt) = \sscanf($authorization, 'Bearer %s');
+        if (! $jwt) {
             throw new \DomainException('Token não informado');
         }
 
@@ -212,7 +216,7 @@ class JWTService
      * Converte um objeto stdClass em um array associativo.
      *
      * @param StdClass $obj
-     *                      Objeto a ser convertido
+     *            Objeto a ser convertido
      *
      * @return array Objeto convertido em array
      */
@@ -222,6 +226,7 @@ class JWTService
     }
 
     /**
+     *
      * @return the Application
      */
     public function getApp()
