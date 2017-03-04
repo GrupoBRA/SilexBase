@@ -28,7 +28,7 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"OnyxERP\\Core\\" : "src/"
+			"OnyxERP\\" : "src/"
 		},
 		"exclude-from-classmap" : [
 			"/Tests/",
