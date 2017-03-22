@@ -2,6 +2,7 @@
 
 namespace OnyxERP\Core\Application\Service;
 
+use PHPUnit_Framework_TestCase;
 use Silex\Application;
 
 /**
@@ -10,13 +11,8 @@ use Silex\Application;
  * @author Jean-Philippe Dépigny <jp.depigny@gmail.com>
  * @author jfranciscos4 <silvaivctd@gmail.com>
  */
-class GuzzleServiceProviderTest extends \PHPUnit_Framework_TestCase
+class GuzzleServiceProviderTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var LoginService
-     */
-    protected $object;
-
     /**
      * @var Application
      */
@@ -28,8 +24,8 @@ class GuzzleServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->app = require __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'bootstrap.php';
-        $this->object = (new GuzzleServiceProvider())->register($this->app);
+        chdir(__DIR__);
+        $this->app = require '../../../../../bootstrap.php';
     }
 
     /**
@@ -40,12 +36,10 @@ class GuzzleServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-     * @covers \OnyxERP\Core\Application\Service\GuzzleServiceProvider::__construct
-     */
-    public function testConstructor()
+    public function testInitialize()
     {
-        $this->assertInstanceOf('Silex\Application', $this->app);
-        $this->object = new GuzzleServiceProvider();
+        $guzzle = $this->app['guzzle'];
+        $testedObj = new \GuzzleHttp\Client();
+        $this->assertInstanceOf(get_class($testedObj), $guzzle);
     }
 }

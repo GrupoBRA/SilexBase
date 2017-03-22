@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="SilexBase" default="full-build">
     <!-- By default, we assume all tools to be on the $PATH -->
-    <property name="pdepend" value="C:\xampp\htdocs\Core\bin\pdepend.bat"/>
-    <property name="phpcpd"  value="C:\xampp\htdocs\Core\bin\phpcpd.bat"/>
-    <property name="phpcs"   value="C:\xampp\htdocs\Core\bin\phpcs.bat"/>
-    <property name="phpdox"  value="C:\xampp\htdocs\Core\bin\phpdox.bat"/>
-    <property name="phploc"  value="C:\xampp\htdocs\Core\bin\phploc.bat"/>
-    <property name="phpmd"   value="C:\xampp\htdocs\Core\bin\phpmd.bat"/>
-    <property name="phpunit" value="C:\xampp\htdocs\Core\bin\phpunit.bat"/>
-    <property name="phpmetrics" value="C:\xampp\htdocs\Core\bin\phpmetrics.bat"/>
-    <property name="phpspec" value="C:\xampp\htdocs\Core\bin\phpspec.bat"/>
-    <property name="apigen" value="C:\Users\manute\AppData\Roaming\Composer\vendor\bin\apigen\apigen.bat"/>
-    <property name="behat" value="C:\xampp\htdocs\Core\bin\behat.bat"/>
+    <property name="pdepend" value="${basedir}\bin\pdepend.bat"/>
+    <property name="phpcpd"  value="${basedir}\bin\phpcpd.bat"/>
+    <property name="phpcs"   value="${basedir}\bin\phpcs.bat"/>
+    <property name="phpdox"  value="${basedir}\bin\phpdox.bat"/>
+    <property name="phploc"  value="${basedir}\bin\phploc.bat"/>
+    <property name="phpmd"   value="${basedir}\bin\phpmd.bat"/>
+    <property name="phpunit" value="${basedir}\bin\phpunit.bat"/>
+    <property name="phpmetrics" value="${basedir}\bin\phpmetrics.bat"/>
+    <property name="phpspec" value="${basedir}\bin\phpspec.bat"/>
+    <property name="apigen" value="C:\Users\jfranciscos4\AppData\Roaming\Composer\vendor\bin\apigen\apigen.bat"/>
+    <property name="behat" value="${basedir}\bin\behat.bat"/>
 
     <!-- Use this when the tools are located as PHARs in ${basedir}/build/tools
     <property name="pdepend" value="${basedir}/build/tools/pdepend.phar"/>
@@ -35,7 +35,7 @@
     depends="prepare,static-analysis,phpunit,phpdox,-check-failure"
     description="Performs static analysis, runs the tests, and generates project documentation"/>-->
     <target name="full-build"
-            depends="prepare,static-analysis, behat, phpspec, -check-failure"
+            depends="prepare,lint,phpcs-ci,phpcpd-ci,phpmd-ci, phpunit, phpspec, behat, phpmetrics, -check-failure"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
     <!--<target name="full-build-parallel"
     depends="prepare,static-analysis-parallel,phpunit,phpdox,-check-failure"
@@ -46,7 +46,7 @@
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpmetrics"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
             description="Performs static analysis" />
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
@@ -289,8 +289,8 @@
         <delete dir="${basedir}/build/phpmetrics"/>
         <mkdir dir="${basedir}/build/phpmetrics"/>
         <exec executable="${phpmetrics}" resultproperty="result.phpmetrics" taskname="phpmetrics">
-            <arg value="--report-html" />
-            <arg path="${basedir}/build/phpmetrics/index.html" />
+            <arg value="--report-html=${basedir}/build/phpmetrics" />
+            <arg value="--report-violations=${basedir}/build/phpmetrics/violations.xml" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
