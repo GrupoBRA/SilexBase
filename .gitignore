@@ -246,3 +246,4 @@ config/databases.php
 /config/urls_apis.php
 /.php_cs.cache
 /php_errors.log
+.htaccess
