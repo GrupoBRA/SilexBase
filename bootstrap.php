@@ -19,20 +19,20 @@ ini_set('display_errors', 1); // don't show any errors...
 error_reporting(E_ALL); // ...but do log them
 set_time_limit(300);
 
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
-use OnyxERP\Core\Application\Service\GuzzleServiceProvider;
-use OnyxERP\Core\Application\Service\JSONServiceProvider;
-use OnyxERP\Core\Application\Service\JWTService;
-use Silex\Application;
-use Silex\Provider\MonologServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\ValidatorServiceProvider;
-use Symfony\Component\Debug\ErrorHandler;
-use Symfony\Component\Debug\ExceptionHandler;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use \Monolog\Handler\RotatingFileHandler;
+use \Monolog\Logger;
+use \OnyxERP\Core\Application\Service\GuzzleServiceProvider;
+use \OnyxERP\Core\Application\Service\JSONServiceProvider;
+use \OnyxERP\Core\Application\Service\JWTService;
+use \Silex\Application;
+use \Silex\Provider\MonologServiceProvider;
+use \Silex\Provider\ServiceControllerServiceProvider;
+use \Silex\Provider\ValidatorServiceProvider;
+use \Symfony\Component\Debug\ErrorHandler;
+use \Symfony\Component\Debug\ExceptionHandler;
+use \Symfony\Component\HttpFoundation\JsonResponse;
+use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\HttpFoundation\Response;
 
 chdir(__DIR__);
 
