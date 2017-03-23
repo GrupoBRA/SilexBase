@@ -1,11 +1,9 @@
 <?php
 namespace OnyxERP\Core\Application\Service;
 
-use DateTime;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use function file_get_contents;
-use function file_put_contents;
+use \InvalidArgumentException;
+use \Pimple\Container;
+use \Pimple\ServiceProviderInterface;
 
 /**
  * JSONServiceProvider.
@@ -50,12 +48,12 @@ class JSONServiceProvider implements ServiceProviderInterface
      *
      * @param array $parameters
      * @param string $filename
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createJSON(array $parameters, $filename)
     {
         if (empty($filename)) {
-            throw new \InvalidArgumentException('Filename not found');
+            throw new InvalidArgumentException('Filename not found');
         }
         \file_put_contents($filename, \json_encode($parameters));
     }
@@ -64,12 +62,12 @@ class JSONServiceProvider implements ServiceProviderInterface
      *
      * @param string $filename
      * @return array
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function readJSONByArray($filename)
+    public function readJsonToArray($filename)
     {
         if (! \file_exists($filename)) {
-            throw new \InvalidArgumentException('Filename not found');
+            throw new InvalidArgumentException('Filename not found');
         }
         $file = \file_get_contents($filename);
         return \json_decode($file, true);
