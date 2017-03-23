@@ -244,3 +244,5 @@ config/databases.php
 /cache/
 /nbproject/
 /config/urls_apis.php
+/.php_cs.cache
+/php_errors.log
