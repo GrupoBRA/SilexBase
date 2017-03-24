@@ -10,7 +10,7 @@
     <property name="phpunit" value="${basedir}\bin\phpunit.bat"/>
     <property name="phpmetrics" value="${basedir}\bin\phpmetrics.bat"/>
     <property name="phpspec" value="${basedir}\bin\phpspec.bat"/>
-    <property name="apigen" value="C:\Users\jfranciscos4\AppData\Roaming\Composer\vendor\bin\apigen\apigen.bat"/>
+    <property name="apigen" value="C:\Users\jfranciscos4\AppData\Roaming\Composer\venapigen.bat"/>
     <property name="behat" value="${basedir}\bin\behat.bat"/>
 
     <!-- Use this when the tools are located as PHARs in ${basedir}/build/tools
