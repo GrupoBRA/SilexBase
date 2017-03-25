@@ -1,11 +1,8 @@
 <?php
+
 namespace OnyxERP\Core\Application;
 
-use InvalidArgumentException;
-use OnyxERP\Core\Application\Service\AuthService;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ControllerProviderAbstract.
@@ -15,13 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
  * PHP version 5.6
  *
  * @author jfranciscos4 <silvaivctd@gmail.com>
- * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- *
- * @version 1.6.2
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
+ * @license https://github.com/BRAConsultoria/SilexBase/blob/master/LICENSE Proprietary
+ * @version 1.0.2
  */
 abstract class ControllerProviderAbstract
 {
+
+     const HTTP_CODE_SUCCESS = 200;
+     const HTTP_CODE_ERROR = 400;
 
     /**
      * [$app description].
@@ -29,6 +28,17 @@ abstract class ControllerProviderAbstract
      * @var \Silex\Application
      */
     private $app;
+
+     protected function jsonResponseDecorator(JsonResponse $jsonResponse, array $result, $statusError = self::HTTP_CODE_ERROR, $statusSuccess = self::HTTP_CODE_SUCCESS)
+     {
+	 $data = [
+             'status' => false,
+	     'data' => null
+         ];
+
+	 $jsonResponse->setData($data);
+	 
+     }
 
     /**
      * Response JSON.
@@ -46,20 +56,18 @@ abstract class ControllerProviderAbstract
     protected function responseJson(array $resultados, $statusErro = 400, $statusSucceso = 200)
     {
         $response = new JsonResponse();
-
+        $response->setData(array(
+            'status' => false,
+            'data' => $resultados
+        ));
         $response->setStatusCode($statusErro);
-        if (count($resultados) > 0 && ! isset($resultados['error'])) {
+        if (count($resultados) > 0 && !isset($resultados['error'])) {
             $response->setEncodingOptions(JSON_NUMERIC_CHECK);
             $response->setData(array(
                 'status' => true,
                 'data' => $resultados
             ));
             $response->setStatusCode($statusSucceso);
-        } else {
-            $response->setData(array(
-                'status' => false,
-                'data' => $resultados
-            ));
         }
         $response->headers->set('Content-Type', 'UTF-8');
         $response->headers->set('Accept-Encoding', 'GZIP');
@@ -86,7 +94,7 @@ abstract class ControllerProviderAbstract
      *
      * @return self
      */
-    private function setApp(\Silex\Application $app)
+    public function setApp(\Silex\Application $app)
     {
         $this->app = $app;
 

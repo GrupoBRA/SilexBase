@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * PHP version 5.6
  *
- * @author jfranciscos4 <silvaivctd@gmail.com>
+ * @author    jfranciscos4 <silvaivctd@gmail.com>
  * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
  *
  * @version 1.0.0
  */
@@ -49,12 +49,17 @@ class JWTService
     public function encode(array $dados)
     {
         try {
-            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'encode/', [
-                'body' => \json_encode([
+            $response = $this->getApp()['guzzle']->post(
+                \URL_JWT_API . 'encode/',
+                [
+                'body' => \json_encode(
+                    [
                     'apiKey' => \base64_encode($dados['app']['apikey']),
                     'data' => $dados
-                ])
-            ]);
+                    ]
+                )
+                ]
+            );
 
             if ($response->getStatusCode() === '200') {
                 $responseObj = \json_decode($response->getBody(), true);
@@ -79,11 +84,14 @@ class JWTService
     public function decode($jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'decode/', [
+            $response = $this->getApp()['guzzle']->get(
+                \URL_JWT_API . 'decode/',
+                [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-            ]);
+                ]
+            );
 
             if ($response->getStatusCode() === '200') {
                 $responseObj = \json_decode($response->getBody(), true);
@@ -98,7 +106,7 @@ class JWTService
     /**
      * Adiciona dados em $dados a um token já existente.
      *
-     * @param array $dados
+     * @param array   $dados
      *            <code>
      *            //Dados a serem adicionados, para garantir a compatibilidade, deve seguir o formato
      *            $dados = [
@@ -116,14 +124,19 @@ class JWTService
     public function push(array $dados, $jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->post(\URL_JWT_API . 'push/', [
-                'body' => \json_encode([
+            $response = $this->getApp()['guzzle']->post(
+                \URL_JWT_API . 'push/',
+                [
+                'body' => \json_encode(
+                    [
                     'data' => $dados
-                ]),
+                    ]
+                ),
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-            ]);
+                ]
+            );
 
             if ($response->getStatusCode() === '200') {
                 $responseObj = \json_decode($response->getBody(), true);
@@ -146,11 +159,14 @@ class JWTService
     public function checkJWT($jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->get(\URL_JWT_API . 'check/', [
+            $response = $this->getApp()['guzzle']->get(
+                \URL_JWT_API . 'check/',
+                [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-            ]);
+                ]
+            );
 
             if ($response->getStatusCode() === '200') {
                 $responseObj = \json_decode($response->getBody(), true);
