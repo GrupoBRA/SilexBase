@@ -20,28 +20,8 @@ use OnyxERP\Core\Application\Service\JWTService;
  *
  * @version 1.4.0
  */
-class AboutService
-{
-    /**
- * @var string Request body
-*/
-    private $payload;
-
-    /**
- * @var string Json Web Token
-*/
-    private $jwt;
-
-    /**
- * @var Client Instância do Guzzle
-*/
-    private $guzzle;
-    /**
-     *
-     * @var Application
-     */
-    private $app;
-    
+class AboutService extends BaseService
+{       
     /**
  * @var JWTService
 */
@@ -54,8 +34,7 @@ class AboutService
      */
     public function __construct(Application $app)
     {
-        $this->app          = $app;
-        $this->guzzle       = $app['guzzle'];
+        parent::__construct($app);
         $this->jwtService   = new JWTService($app);
     }
 
@@ -75,9 +54,9 @@ class AboutService
             }
 
             return $dadosApp;
-        } else {
-            return (object) [];
-        }
+        } 
+        return (object) [];
+        
     }
     
     /**
@@ -108,42 +87,5 @@ class AboutService
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-    }
-    
-    /**
-     *
-     * @return type
-     */
-    public function getPayload()
-    {
-        return $this->payload;
-    }
-    /**
-     *
-     * @param type $payload
-     * @return \RecadAPI\Core\Application\Service\DeviceService
-     */
-    public function setPayload($payload)
-    {
-        $this->payload = $payload;
-        return $this;
-    }
-    /**
-     *
-     * @return type
-     */
-    public function getJwt()
-    {
-        return $this->jwt;
-    }
-    /**
-     *
-     * @param type $jwt
-     * @return \RecadAPI\Core\Application\Service\DeviceService
-     */
-    public function setJwt($jwt)
-    {
-        $this->jwt = $jwt;
-        return $this;
     }
 }
