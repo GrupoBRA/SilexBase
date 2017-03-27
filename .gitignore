@@ -247,3 +247,4 @@ config/databases.php
 /.php_cs.cache
 /php_errors.log
 .htaccess
+/teste.json
