@@ -1,3 +1,11 @@
+Version 1.0.4:
+Merge branch 'feature/issue-8' into develop
+Finalizado Task #8 - RF - AboutService
+autalizando o composer.json Task #8 - RF - AboutService
+resolvendo The method getDadosApp uses an else expression. Else is never necessary and you can simplify the code to work without else. Task #8 - RF - AboutService
+Versão parcial correção do PHPSpec Task #8 - RF - AboutService
+Merge tag 'v1.0.3' into develop
+
 Version 1.0.3:
 Merge branch 'feature/cleancode' into develop
 Merge branch 'develop' into feature/cleancode
