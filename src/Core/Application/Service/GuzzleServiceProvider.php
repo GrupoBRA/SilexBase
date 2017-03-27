@@ -20,6 +20,11 @@ class GuzzleServiceProvider implements ServiceProviderInterface
      */
     private $configuration = array();
 
+    public function __construct()
+    {
+        // TODO: write logic here
+    }
+
     /**
      *
      * {@inheritdoc}
