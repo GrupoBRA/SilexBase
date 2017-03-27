@@ -1,3 +1,11 @@
+Version 1.0.3:
+Merge branch 'feature/cleancode' into develop
+Merge branch 'develop' into feature/cleancode
+Clean Project
+CleanCode project
+Merge tag 'v1.0.2' into develop
+Merge tag 'v1.0.1' into develop
+
 Version 1.0.2:
 Atualização Task #4 - RNF - Atualização do composer.json para distribuição
 
