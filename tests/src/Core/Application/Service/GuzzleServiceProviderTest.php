@@ -2,7 +2,7 @@
 
 namespace OnyxERP\Core\Application\Service;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 
 /**
@@ -11,7 +11,7 @@ use Silex\Application;
  * @author Jean-Philippe Dépigny <jp.depigny@gmail.com>
  * @author jfranciscos4 <silvaivctd@gmail.com>
  */
-class GuzzleServiceProviderTest extends PHPUnit_Framework_TestCase
+class GuzzleServiceProviderTest extends TestCase
 {
     /**
      * @var Application
