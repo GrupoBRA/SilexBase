@@ -64,7 +64,7 @@ class AboutService extends BaseService
      * @return array
      * @throws \Exception
      */
-    public function get($appId)
+    private function get($appId)
     {
         try {
             $conf = [
@@ -78,7 +78,7 @@ class AboutService extends BaseService
                 ];
             }
 
-            $response = $this->guzzle->get(\URL_APP_API .'app/'. $appId .'/', $conf);
+            $response = $this->app['guzzle']->get(\URL_APP_API .'app/'. $appId .'/', $conf);
 
             return [
                 'response'      => \json_decode($response->getBody()->getContents(), true),

@@ -21,4 +21,10 @@ class AboutServiceSpec extends ObjectBehavior
     {
         $this->shouldHaveType(AboutService::class);
     }
+    
+    function it_is_get_app_id()
+    {
+        
+        $this->getDadosApp()->shoulBeArray();
+    }
 }
