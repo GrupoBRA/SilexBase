@@ -2,11 +2,11 @@
 
 namespace spec\OnyxERP\Core\Application\Service;
 
-use OnyxERP\Core\Application\Service\GuzzleServiceProvider;
+use OnyxERP\Core\Application\Service\AboutService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class GuzzleServiceProviderSpec extends ObjectBehavior
+class AboutServiceSpec extends ObjectBehavior
 {
     /**
      *
@@ -17,9 +17,14 @@ class GuzzleServiceProviderSpec extends ObjectBehavior
         $app = require './../../../../bootstrap.php';
         $this->beConstructedWith($app);
     }
-    
-    public function it_is_initializable()
+    function it_is_initializable()
     {
-        $this->shouldHaveType(GuzzleServiceProvider::class);
+        $this->shouldHaveType(AboutService::class);
+    }
+    
+    function it_is_get_app_id()
+    {
+        
+        $this->getDadosApp()->shoulBeArray();
     }
 }

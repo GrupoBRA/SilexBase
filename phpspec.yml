@@ -2,8 +2,8 @@
 # version 1.0.0
 suites:
     core_suite:
-        namespace: OnyxERP\Core
-        psr4_prefix: OnyxERP\Core
+        namespace: OnyxERP\
+        psr4_prefix: OnyxERP\
         src_path: %paths.config%/src
 code_generation: true
 bootstrap: bootstrap.php
