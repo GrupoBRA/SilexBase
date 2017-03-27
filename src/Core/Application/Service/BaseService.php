@@ -1,5 +1,4 @@
 <?php
-
 namespace OnyxERP\Core\Application\Service;
 
 use \Silex\Application;
@@ -9,24 +8,30 @@ use \Silex\Application;
  *
  * PHP version 5.6
  *
- * @author    jfranciscos4 <silvaivctd@gmail.com>
- * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @author jfranciscos4 <silvaivctd@gmail.com>
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
+ * @license https://github.com/BRAConsultoria/SilexBase/blob/master/LICENSE (c) 2007/2017,
+ *          Grupo BRA - Solucoes para Gestao Publica
  *
  * @version 1.0.0
  */
 class BaseService
 {
+
     /**
- * @var string Request body
-*/
+     *
+     * @var string Request body
+     *
+     */
     private $payload;
 
     /**
- * @var string Json Web Token
-*/
+     *
+     * @var string Json Web Token
+     *
+     */
     private $jwt;
-    
+
     /**
      *
      * @var Application
@@ -34,15 +39,30 @@ class BaseService
     protected $app;
 
     /**
-     * [__construct description].
+     * Constructor of BaseService
      *
-     * @param Application $app [description]
+     * @param Application $app
+     *            Silex App
+     * @param string $jwt
+     *            Json Web Token
+     * @param string $payload
+     *            Request body
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, $jwt = null, $payload = null)
     {
         $this->app = $app;
+
+        if (! empty($jwt)) {
+            $this->setJwt($jwt);
+        }
+
+        if (! empty($payload)) {
+            $this->setPayload($payload);
+        }
     }
+
     /**
+     * Get Request Body of Request
      *
      * @return type
      */
@@ -50,9 +70,12 @@ class BaseService
     {
         return $this->payload;
     }
+
     /**
+     * Set Request Body of Request
      *
-     * @param type $payload
+     * @param string $payload
+     *            Request Body
      * @return BaseService
      */
     public function setPayload($payload)
@@ -60,15 +83,19 @@ class BaseService
         $this->payload = $payload;
         return $this;
     }
+
     /**
+     * Get JSON Web Token of Request
      *
-     * @return type
+     * @return string
      */
     public function getJwt()
     {
         return $this->jwt;
     }
+
     /**
+     * Set JSON Web Token of Request
      *
      * @param type $jwt
      * @return BaseService

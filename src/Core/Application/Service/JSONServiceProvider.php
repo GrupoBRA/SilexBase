@@ -8,45 +8,59 @@ use \Pimple\ServiceProviderInterface;
 /**
  * JSONServiceProvider.
  *
- * Cria arquivo JSON
+ * Create file of type JSON
  *
  * PHP version 5.6
  *
- * @author jfranciscos4 <silvaivctd@gmail.com>
- * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @author    jfranciscos4 <silvaivctd@gmail.com>
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
+ * @license   https://github.com/BRAConsultoria/SilexBase/blob/master/LICENSE Proprietary
  *
- * @version 1.6.3
+ * @version 1.0.2
  */
 class JSONServiceProvider implements ServiceProviderInterface
 {
+    /**
+     *
+     */
+    const NAME_SERVICE_PROVIDER_REGISTER = 'json';
+
+    private function createDirectory($directory)
+    {
+        if (file_exists($directory) === false) {
+	    mkdir($directory, 0700, true);
+	}
+    }
 
     public function __construct()
-    {}
-
-    /**
-     *
-     * {@inheritdoc}
-     *
-     */
-    public function boot(Container $app)
-    {}
-
-    /**
-     *
-     * {@inheritdoc}
-     *
-     */
-    public function register(Container $app)
     {
-        $app['json'] = function ($app) {
-            return new self();
-        };
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function boot(Container $app)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws DomainException
+     */
+    public function register(Container $app)
+    {
+	if (isset($app[self::NAME_SERVICE_PROVIDER_REGISTER])) {
+	    throw new DomainException('Position exist in App (Silex\Application)');
+	}
+
+        $app[self::NAME_SERVICE_PROVIDER_REGISTER] = function ($app) {
+            return new self();
+        };
+    }
+    
+    /**
      *
-     * @param array $parameters
+     * @param array  $parameters
      * @param string $filename
      * @throws InvalidArgumentException
      */
