@@ -13,6 +13,7 @@ use Silex\Application;
  */
 class GuzzleServiceProviderTest extends TestCase
 {
+
     /**
      * @var Application
      */
@@ -34,6 +35,7 @@ class GuzzleServiceProviderTest extends TestCase
      */
     protected function tearDown()
     {
+        
     }
 
     public function testInitialize()
@@ -42,4 +44,5 @@ class GuzzleServiceProviderTest extends TestCase
         $testedObj = new \GuzzleHttp\Client();
         $this->assertInstanceOf(get_class($testedObj), $guzzle);
     }
+
 }

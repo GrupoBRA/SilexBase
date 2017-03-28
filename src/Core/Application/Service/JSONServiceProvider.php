@@ -28,8 +28,8 @@ class JSONServiceProvider implements ServiceProviderInterface
     private function createDirectory($directory)
     {
         if (file_exists($directory) === false) {
-	    mkdir($directory, 0700, true);
-	}
+            mkdir($directory, 0700, true);
+        }
     }
 
     public function __construct()
@@ -45,13 +45,14 @@ class JSONServiceProvider implements ServiceProviderInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws DomainException
      */
     public function register(Container $app)
     {
-	if (isset($app[self::NAME_SERVICE_PROVIDER_REGISTER])) {
-	    throw new DomainException('Position exist in App (Silex\Application)');
-	}
+        if (isset($app[self::NAME_SERVICE_PROVIDER_REGISTER])) {
+            throw new DomainException('Position exist in App (Silex\Application)');
+        }
 
         $app[self::NAME_SERVICE_PROVIDER_REGISTER] = function ($app) {
             return new self();

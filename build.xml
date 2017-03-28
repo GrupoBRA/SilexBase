@@ -315,12 +315,12 @@
         <delete dir="${basedir}/build/api"/> 
         <mkdir dir="${basedir}/build/api"/>  
         <exec executable="${apigen}">
+            <arg value="generate" />
             <arg value="-s" />
             <arg path="${basedir}/src" />
             <arg value="-d" />
             <arg path="${basedir}/build/api" />
             <arg value="--todo" />
-            <arg value="--progressbar=yes" />
         </exec>
     </target>
     
