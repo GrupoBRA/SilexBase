@@ -8,9 +8,9 @@ use \Silex\Application;
  *
  * PHP version 5.6
  *
- * @author jfranciscos4 <silvaivctd@gmail.com>
+ * @author    jfranciscos4 <silvaivctd@gmail.com>
  * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
- * @license https://github.com/BRAConsultoria/SilexBase/blob/master/LICENSE (c) 2007/2017,
+ * @license   https://github.com/BRAConsultoria/SilexBase/blob/master/LICENSE (c) 2007/2017,
  *          Grupo BRA - Solucoes para Gestao Publica
  *
  * @version 1.0.0
@@ -21,14 +21,12 @@ class BaseService
     /**
      *
      * @var string Request body
-     *
      */
     private $payload;
 
     /**
      *
      * @var string Json Web Token
-     *
      */
     private $jwt;
 
@@ -43,9 +41,9 @@ class BaseService
      *
      * @param Application $app
      *            Silex App
-     * @param string $jwt
+     * @param string      $jwt
      *            Json Web Token
-     * @param string $payload
+     * @param string      $payload
      *            Request body
      */
     public function __construct(Application $app, $jwt = null, $payload = null)
@@ -74,7 +72,7 @@ class BaseService
     /**
      * Set Request Body of Request
      *
-     * @param string $payload
+     * @param  string $payload
      *            Request Body
      * @return BaseService
      */
@@ -97,7 +95,7 @@ class BaseService
     /**
      * Set JSON Web Token of Request
      *
-     * @param type $jwt
+     * @param  type $jwt
      * @return BaseService
      */
     public function setJwt($jwt)

@@ -1,9 +1,9 @@
 <?php
 namespace OnyxERP\Core\Application\Service;
 
-use Exception;
-use Silex\Application;
-use URL_BIOMETRIA_API;
+use \Exception;
+use \OnyxERP\Core\Domain\ValueObject\PfCod;
+use \URL_BIOMETRIA_API;
 
 /**
  * BiometraService.
@@ -21,11 +21,11 @@ class BiometriaService extends BaseService
 {
 
     /**
-     *
+     * Recupera os dados de biometria da pessoa fisica informada pelo
      * @return array
      * @throws Exception Em caso de erro não tratável
      */
-    public function getDadosBiometria($pfCod)
+    public function getDadosBiometria(PfCod $pfCod)
     {
         $conf = [
             'body' => $this->getPayload(),
@@ -38,7 +38,7 @@ class BiometriaService extends BaseService
             ];
         }
 
-        $response = $this->app['guzzle']->get(URL_BIOMETRIA_API . 'full/' . $pfCod . '/', $conf);
+        $response = $this->app['guzzle']->get(URL_BIOMETRIA_API . 'full/' . $pfCod->getValue() . '/', $conf);
 
         try {
             $decoded = \json_decode($response->getBody()->getContents(), true);

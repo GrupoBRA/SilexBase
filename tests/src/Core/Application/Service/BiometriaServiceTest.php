@@ -2,6 +2,7 @@
 
 namespace OnyxERP\Core\Application\Service;
 
+use \OnyxERP\Core\Domain\ValueObject\PfCod;
 use \PHPUnit\Framework\TestCase;
 
 /**
@@ -37,14 +38,13 @@ class BiometriaServiceTest extends TestCase
 
     /**
      * @covers OnyxERP\Core\Application\Service\BiometriaService::getDadosBiometria
-     * @todo   Implement testGetDadosBiometria().
      */
     public function testGetDadosBiometria()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $pfCod = rand(1,1200);
+        $voPfCod = new PfCod($pfCod);
+        $lista = $this->object->getDadosBiometria($voPfCod);
+        $this->assertTrue(is_array($lista));
     }
-
+    
 }

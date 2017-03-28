@@ -21,7 +21,8 @@ use OnyxERP\Core\Application\Service\JWTService;
  * @version 1.4.0
  */
 class AboutService extends BaseService
-{       
+{
+       
     /**
  * @var JWTService
 */
@@ -54,9 +55,8 @@ class AboutService extends BaseService
             }
 
             return $dadosApp;
-        } 
+        }
         return (object) [];
-        
     }
     
     /**
