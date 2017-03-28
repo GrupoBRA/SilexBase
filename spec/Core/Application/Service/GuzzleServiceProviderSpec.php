@@ -15,7 +15,9 @@ class GuzzleServiceProviderSpec extends ObjectBehavior
     {
         chdir(__DIR__);
         $app = require './../../../../bootstrap.php';
-        $this->beConstructedWith($app);
+//        $this->beConstructedWith($app);
+        
+        $this->register($app);
     }
     
     public function it_is_initializable()

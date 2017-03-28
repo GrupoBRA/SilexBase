@@ -1,17 +1,21 @@
 <?php
 
+use \Silex\Application;
+
 /**
  * Bootstrap.
  *
  * PHP version 5.6
  *
  * @author jfranciscos4 <silvaivctd@gmail.com>
- * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
  *
  * @version 1.0.0
  */
-$app = require_once __DIR__.DIRECTORY_SEPARATOR.'bootstrap.php';
 
-use Silex\Application;
+/**
+ * @var Application Description
+ */
+$app = require_once __DIR__.DIRECTORY_SEPARATOR.'bootstrap.php';
 
 $app->run();

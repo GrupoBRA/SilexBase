@@ -22,9 +22,14 @@ class AboutServiceSpec extends ObjectBehavior
         $this->shouldHaveType(AboutService::class);
     }
     
-    function it_is_get_app_id()
-    {
-        
-        $this->getDadosApp()->shoulBeArray();
-    }
+//    function it_is_get_app_id()
+//    {
+//        $payload = ['teste'=>''];
+//        $key = '1023456';
+//        
+//        $jwt = \Firebase\JWT\JWT::encode($payload, $key);
+//            
+//        $this->setJwt($jwt)->setPayload($payload);
+//        $this->getDadosApp()->shoulBeArray();
+//    }
 }

@@ -26,18 +26,14 @@ class GuzzleServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     *
      * {@inheritdoc}
-     *
      */
     public function boot(Container $app)
     {
     }
 
     /**
-     *
      * {@inheritdoc}
-     *
      */
     public function register(Container $app)
     {
