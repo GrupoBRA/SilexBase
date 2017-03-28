@@ -1,3 +1,13 @@
+Version 1.2.0:
+Promoção de versão Task #16 - SCM - Release v1.2.0
+Merge branch 'feature/issue-14' into develop
+PHPCBF e PHP-CS-Fixer Task #14 - RF - DriveService
+implementação parcial Task #14 - RF - DriveService
+melhorias Task #14 - RF - DriveService
+Atualizando o composer Task #14 - RF - DriveService
+Criando as classe básicas Task #14 - RF - DriveService
+Merge tag 'v1.1.0' into develop
+
 Version 1.1.0:
 Merge branch 'feature/issue-11' into develop
 Finalizando o BiometricaService Melhorias diversas Task #11 - RF - BiometriaService
