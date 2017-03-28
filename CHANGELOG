@@ -1,3 +1,15 @@
+Version 1.1.0:
+Merge branch 'feature/issue-11' into develop
+Finalizando o BiometricaService Melhorias diversas Task #11 - RF - BiometriaService
+Criando o ValueObject para PfCod
+Correção do PHPSpec Task #11 - RF - BiometriaService
+Melhorias no index.php Task #11 - RF - BiometriaService
+Criando e correção de Teste Unitário Task #11 - RF - BiometriaService
+Atualizando o Composer Correção no build para o Apigen Task #11 - RF - BiometriaService
+Fix duplicate class Task #11 - RF - BiometriaService
+Criando os arquivos iniciais Task #11 - RF - BiometriaService
+Merge tag 'v1.0.4' into develop
+
 Version 1.0.4:
 Merge branch 'feature/issue-8' into develop
 Finalizado Task #8 - RF - AboutService
