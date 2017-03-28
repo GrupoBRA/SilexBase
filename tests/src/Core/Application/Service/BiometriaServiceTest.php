@@ -23,7 +23,7 @@ class BiometriaServiceTest extends TestCase
     protected function setUp()
     {
         chdir(__DIR__);
-        $app = require '../../../../../bootstrap.php';
+        $app = include '../../../../../bootstrap.php';
         $this->object = new BiometriaService($app);
     }
 
@@ -41,7 +41,7 @@ class BiometriaServiceTest extends TestCase
      */
     public function testGetDadosBiometria()
     {
-        $pfCod = rand(1,1200);
+        $pfCod = rand(1, 1200);
         $voPfCod = new PfCod($pfCod);
         $lista = $this->object->getDadosBiometria($voPfCod);
         $this->assertTrue(is_array($lista));

@@ -17,11 +17,11 @@ class PfCod
 {
     /**
      *
-     * @var integer 
+     * @var integer
      */
     private $pfCod;
     /**
-     * 
+     *
      * @param integer $pfCod
      * @throws InvalidArgumentException
      */
@@ -34,7 +34,7 @@ class PfCod
         $this->pfCod = $pfCod;
     }
     /**
-     * 
+     *
      * @return type
      */
     public function getValue()
@@ -42,7 +42,7 @@ class PfCod
         return $this->pfCod;
     }
     /**
-     * 
+     *
      * @return type
      */
     public function __toString()
@@ -50,7 +50,7 @@ class PfCod
         return $this->pfCod;
     }
     /**
-     * 
+     *
      * @param PfCod $pfCod
      * @return boolean
      */

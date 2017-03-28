@@ -22,6 +22,7 @@ class BiometriaService extends BaseService
 
     /**
      * Recupera os dados de biometria da pessoa fisica informada pelo
+     *
      * @return array
      * @throws Exception Em caso de erro não tratável
      */

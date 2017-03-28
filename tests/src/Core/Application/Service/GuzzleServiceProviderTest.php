@@ -26,7 +26,7 @@ class GuzzleServiceProviderTest extends TestCase
     protected function setUp()
     {
         chdir(__DIR__);
-        $this->app = require '../../../../../bootstrap.php';
+        $this->app = include '../../../../../bootstrap.php';
     }
 
     /**
