@@ -312,15 +312,15 @@
     </target>
 
     <target name="apigen" description="Generate API documentation using ApiGen">
-        <delete dir="${basedir}/build/api"/> 
-        <mkdir dir="${basedir}/build/api"/>  
+        <delete dir="${basedir}/build/docs"/> 
+        <mkdir dir="${basedir}/build/docs"/>  
         <exec executable="${apigen}">
             <arg value="generate" />
             <arg value="-s" />
             <arg path="${basedir}/src" />
             <arg value="-d" />
-            <arg path="${basedir}/build/api" />
-            <arg value="--todo" />
+            <arg path="${basedir}/build/docs" />
+            <arg value="--debug" />
         </exec>
     </target>
     
