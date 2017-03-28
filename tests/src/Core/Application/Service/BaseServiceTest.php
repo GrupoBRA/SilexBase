@@ -15,7 +15,6 @@ class BaseServiceTest extends TestCase
      */
     protected $object;
 
-    
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -33,6 +32,7 @@ class BaseServiceTest extends TestCase
      */
     protected function tearDown()
     {
+        
     }
 
     /**
@@ -43,7 +43,7 @@ class BaseServiceTest extends TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+                'This test has not been implemented yet.'
         );
     }
 
@@ -55,7 +55,7 @@ class BaseServiceTest extends TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+                'This test has not been implemented yet.'
         );
     }
 
@@ -67,7 +67,7 @@ class BaseServiceTest extends TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+                'This test has not been implemented yet.'
         );
     }
 
@@ -79,7 +79,8 @@ class BaseServiceTest extends TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+                'This test has not been implemented yet.'
         );
     }
+
 }
