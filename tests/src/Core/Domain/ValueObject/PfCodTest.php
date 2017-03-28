@@ -36,6 +36,7 @@ class PfCodTest extends \PHPUnit\Framework\TestCase
         $pfCod = 1;
         $this->object = new PfCod($pfCod);
         $this->assertTrue(is_int($this->object));
+        $this->assertEquals($pfCod, $this->object->getValue());
     }
 
 }

@@ -52,10 +52,10 @@ class PfCod
     /**
      * 
      * @param PfCod $pfCod
-     * @return type
+     * @return boolean
      */
     public function equals(PfCod $pfCod)
     {
-        return $this->pfCod === $pfCod;
+        return $this->pfCod === $pfCod->getValue();
     }
 }
