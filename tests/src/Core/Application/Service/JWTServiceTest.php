@@ -41,6 +41,8 @@ class JWTServiceTest extends TestCase
      */
     public function testDecodeWithSuccess()
     {
+        chdir(__DIR__);
+        $app = include '../../../../../bootstrap.php';
         $dados = [
             "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
             "app" => [
@@ -49,8 +51,9 @@ class JWTServiceTest extends TestCase
                 "name" => "Dash"
             ]
         ];
-        $jwt = $this->object->encode($dados);
-        $response = $this->object->decode($jwt->getResponse());
+        $encode = new Encode($app, $dados);
+        $jwt = $encode->getResponse();
+        $response = $this->object->decode($jwt);
 //        $this->assertInstanceOf(Decode::class, $decode);
 //        $response = $decode->getResponse();
         $this->assertInternalType('array', $response);
