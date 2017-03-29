@@ -37,35 +37,6 @@ class JWTServiceTest extends TestCase
     }
 
     /**
-     * @covers OnyxERP\Core\Application\Service\JWTService::encode
-     */
-    public function testEncodeWithSuccess()
-    {
-        $dados = [
-            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
-            "app" => [
-                "id" => "99",
-                "apikey" => "57c974f37c4f8",
-                "name" => "Dash"
-            ]
-        ];
-        $jwt = $this->object->encode($dados);
-        $this->assertInstanceOf(Encode::class, $jwt);
-        $this->assertInternalType('string', $jwt->getResponse());
-    }
-    
-    /**
-     * @covers OnyxERP\Core\Application\Service\JWTService::encode
-     * @expectedException Exception
-     */
-    public function testEncodeWithoutSuccess()
-    {
-        $dados = [
-        ];
-        $this->object->encode($dados);
-    }
-
-    /**
      * @covers OnyxERP\Core\Application\Service\JWTService::decode
      */
     public function testDecodeWithSuccess()

@@ -26,21 +26,6 @@ class JWTService extends BaseService
 {
 
     /**
-     * Solicita a geração de um novo JWT à API responsável, com os dados informado em $dados.
-     *
-     * @param array $dados
-     *            Dados a serem informados no payload do token
-     *
-     * @return string Token gerado
-     *
-     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
-     */
-    public function encode(array $dados)
-    {
-        return new Encode($this->app, $dados);
-    }
-
-    /**
      * Decodifica um JSON Web Token.
      *
      * @param string $jwt
