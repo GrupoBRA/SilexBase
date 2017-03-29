@@ -1,8 +1,11 @@
 <?php
 namespace OnyxERP\Core\Application\Service;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use \DomainException;
+use \Exception;
+use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
+use \Symfony\Component\HttpFoundation\Request;
+use const \URL_JWT_API;
 
 /**
  * JWTService.
@@ -18,23 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @version 1.0.0
  */
-class JWTService
+class JWTService extends BaseService
 {
-
-    /**
-     *
-     * @var Application
-     */
-    private $app;
-
-    /**
-     *
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * Solicita a geração de um novo JWT à API responsável, com os dados informado em $dados.
@@ -44,31 +32,11 @@ class JWTService
      *
      * @return string Token gerado
      *
-     * @throws \Exception em caso de receber um status diferente de 200 da JwtAPI
+     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
      */
     public function encode(array $dados)
     {
-        try {
-            $response = $this->getApp()['guzzle']->post(
-                \URL_JWT_API . 'encode/',
-                [
-                'body' => \json_encode(
-                    [
-                    'apiKey' => \base64_encode($dados['app']['apikey']),
-                    'data' => $dados
-                    ]
-                )
-                ]
-            );
-
-            if ($response->getStatusCode() === '200') {
-                $responseObj = \json_decode($response->getBody(), true);
-
-                return $responseObj['access_token'];
-            }
-        } catch (\Exception $e) {
-            throw new \Exception('Não foi possível obter o token de acesso!');
-        }
+        return new Encode($this->app, $dados);
     }
 
     /**
@@ -79,13 +47,13 @@ class JWTService
      *
      * @return array Dados do token decodificado
      *
-     * @throws \Exception em caso de receber um status diferente de 200 da JwtAPI
+     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
      */
     public function decode($jwt)
     {
         try {
             $response = $this->getApp()['guzzle']->get(
-                \URL_JWT_API . 'decode/',
+                URL_JWT_API . 'decode/',
                 [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
@@ -98,8 +66,8 @@ class JWTService
 
                 return $responseObj['data'];
             }
-        } catch (\Exception $e) {
-            throw new \Exception('Não foi possível decodificar o token de acesso!');
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível decodificar o token de acesso!');
         }
     }
 
@@ -119,13 +87,13 @@ class JWTService
      *
      * @return string Token atualizado
      *
-     * @throws \Exception em caso de receber um status diferente de 200 da JwtAPI
+     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
      */
     public function push(array $dados, $jwt)
     {
         try {
             $response = $this->getApp()['guzzle']->post(
-                \URL_JWT_API . 'push/',
+                URL_JWT_API . 'push/',
                 [
                 'body' => \json_encode(
                     [
@@ -143,8 +111,8 @@ class JWTService
 
                 return $responseObj['access_token'];
             }
-        } catch (\Exception $e) {
-            throw new \Exception('Não foi possível alterar o token de acesso!');
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível alterar o token de acesso!');
         }
     }
 
@@ -154,13 +122,13 @@ class JWTService
      *
      * @return bool true em caso de token válido e ainda ativo
      *
-     * @throws \Exception em caso de receber um status diferente de 200 da JwtAPI
+     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
      */
     public function checkJWT($jwt)
     {
         try {
             $response = $this->getApp()['guzzle']->get(
-                \URL_JWT_API . 'check/',
+                URL_JWT_API . 'check/',
                 [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
@@ -173,8 +141,8 @@ class JWTService
 
                 return $responseObj['success'];
             }
-        } catch (\Exception $e) {
-            throw new \Exception('Não foi possível verificar o token de acesso!');
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível verificar o token de acesso!');
         }
     }
 
@@ -216,13 +184,13 @@ class JWTService
      *
      * @return string JSON Web Token tratado
      *
-     * @throws \DomainException caso $authorization seja omitido ou informado vazio
+     * @throws DomainException caso $authorization seja omitido ou informado vazio
      */
     public function trataJWT($authorization)
     {
         list($jwt) = \sscanf($authorization, 'Bearer %s');
         if (! $jwt) {
-            throw new \DomainException('Token não informado');
+            throw new DomainException('Token não informado');
         }
 
         return $jwt;
@@ -239,14 +207,5 @@ class JWTService
     public function obj2array($obj)
     {
         return \json_decode(\json_encode($obj), true);
-    }
-
-    /**
-     *
-     * @return the Application
-     */
-    public function getApp()
-    {
-        return $this->app;
     }
 }
