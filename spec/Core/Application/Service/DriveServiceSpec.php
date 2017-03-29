@@ -33,8 +33,5 @@ class DriveServiceSpec extends ObjectBehavior
         $lista = $this->getDadosDigitalizacao($pfCod);
         $lista->shouldBeArray();
         
-        $lista->shouldHaveKey('status');
-        $lista->shouldHaveKey('data');
-        
     }
 }

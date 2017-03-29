@@ -248,3 +248,4 @@ config/databases.php
 /php_errors.log
 .htaccess
 /teste.json
+/log/
