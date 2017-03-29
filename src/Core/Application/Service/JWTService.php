@@ -1,4 +1,5 @@
 <?php
+
 namespace OnyxERP\Core\Application\Service;
 
 use \DomainException;
@@ -53,20 +54,24 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'decode/',
-                [
+                    URL_JWT_API . 'decode/', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-                ]
+                    ]
             );
 
-            if ($response->getStatusCode() === 200) {
-                $responseObj = \json_decode($response->getBody(), true);
-
-                return $responseObj['data'];
+            if ($response->getStatusCode() !== 200) {
+                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
+                $this->app['monolog']->error($message);
+                throw new Exception('Não foi possível decodificar o token de acesso!');
             }
+            
+            $responseObj = \json_decode($response->getBody(), true);
+
+            return $responseObj['data'];
         } catch (Exception $e) {
+            $this->app['monolog']->error($e->getTraceAsString());
             throw new Exception('Não foi possível decodificar o token de acesso!');
         }
     }
@@ -93,17 +98,16 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->post(
-                URL_JWT_API . 'push/',
-                [
+                    URL_JWT_API . 'push/', [
                 'body' => \json_encode(
-                    [
-                    'data' => $dados
-                    ]
+                        [
+                            'data' => $dados
+                        ]
                 ),
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-                ]
+                    ]
             );
 
             if ($response->getStatusCode() === '200') {
@@ -128,12 +132,11 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->get(
-                URL_JWT_API . 'check/',
-                [
+                    URL_JWT_API . 'check/', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
-                ]
+                    ]
             );
 
             if ($response->getStatusCode() === '200') {
@@ -189,7 +192,7 @@ class JWTService extends BaseService
     public function trataJWT($authorization)
     {
         list($jwt) = \sscanf($authorization, 'Bearer %s');
-        if (! $jwt) {
+        if (!$jwt) {
             throw new DomainException('Token não informado');
         }
 
