@@ -32,22 +32,25 @@ class Encode extends BaseService
     {
         try {
             parent::__construct($app);
-            $response = $this->app['guzzle']->post(
-                URL_JWT_API . 'encode/', [
+            $payload = [
                 'body' => \json_encode(
                     [
                             'apiKey' => \base64_encode($dados['app']['apikey']),
                             'data' => $dados
                         ]
                 )
-                    ]
-            );
+                    ];
+            $response = $this->app['guzzle']->post(URL_JWT_API . 'encode/', $payload);
 
-            if ($response->getStatusCode() === 200) {
-                $responseObj = \json_decode($response->getBody(), true);
-
-                $this->response = $responseObj['access_token'];
+            if ($response->getStatusCode() !== 200) {
+                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
+                $this->app['monolog']->error($message);
+                throw new Exception('Não foi possível decodificar o token de acesso!');
             }
+            
+            $responseObj = \json_decode($response->getBody(), true);
+
+            $this->response = $responseObj['access_token'];
         } catch (Exception $e) {
             $this->app['monolog']->error($e);
             throw new Exception('Não foi possível obter o token de acesso!');
