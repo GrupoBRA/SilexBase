@@ -22,8 +22,16 @@ class EncodeTest extends TestCase
     protected function setUp()
     {
         chdir(__DIR__);
-//        $app = include '../../../../../../bootstrap.php';
-//        $this->object = new Encode($app, []);
+        $app = include '../../../../../../bootstrap.php';
+        $dados = [
+            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
+            "app" => [
+                "id" => "99",
+                "apikey" => "57c974f37c4f8",
+                "name" => "Dash"
+            ]
+        ];
+        $this->object = new Encode($app, $dados);
     }
 
     /**
@@ -32,25 +40,39 @@ class EncodeTest extends TestCase
      */
     protected function tearDown()
     {
-        
+        $this->object = null;
     }
-
-    public function testConstructor()
+    /**
+     * 
+     */
+    public function testConstructorWithSuccess()
     {
-        $classname = 'Encode';
-
-        // Get mock, without the constructor being called
-        $mock = $this->getMockBuilder($classname)
-                ->disableOriginalConstructor()
-                ->getMock();
-        
+        chdir(__DIR__);
         $app = include '../../../../../../bootstrap.php';
-        $dados = ['app'=>['apikey' => '1345ddda']];
-        
-        $mock->method('__construct')
-                ->willReturn('foo');
-        
-        $this->assertEquals('foo', $mock->__construct($app, $dados));
+        $dados = [
+            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
+            "app" => [
+                "id" => "99",
+                "apikey" => "57c974f37c4f8",
+                "name" => "Dash"
+            ]
+        ];
+        $encode = new Encode($app, $dados);
+        $this->assertInstanceOf(Encode::class, $encode);
+        $this->assertInternalType('string', $encode->getResponse());
     }
-
+    /**
+     * @expectedException Exception
+     */
+    public function testConstructorWithoutSuccess()
+    {
+        chdir(__DIR__);
+        $app = include '../../../../../../bootstrap.php';
+        $dados = [
+            
+        ];
+        $encode = new Encode($app, $dados);
+        $this->assertInstanceOf(Encode::class, $encode);
+        $this->assertInternalType('string', $encode->getResponse());
+    }
 }
