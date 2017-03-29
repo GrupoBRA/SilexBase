@@ -19,7 +19,7 @@ use const \URL_JWT_API;
  * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
  * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
  *
- * @version 1.0.0
+ * @version 1.2.0
  */
 class JWTService extends BaseService
 {
@@ -52,7 +52,7 @@ class JWTService extends BaseService
     public function decode($jwt)
     {
         try {
-            $response = $this->getApp()['guzzle']->get(
+            $response = $this->app['guzzle']->get(
                 URL_JWT_API . 'decode/',
                 [
                 'headers' => [

@@ -55,14 +55,23 @@ class JWTServiceTest extends TestCase
 
     /**
      * @covers OnyxERP\Core\Application\Service\JWTService::decode
-     * @todo   Implement testDecode().
      */
     public function testDecode()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $dados = [
+            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
+            "app" => [
+                "id" => "99",
+                "apikey" => "57c974f37c4f8",
+                "name" => "Dash"
+            ]
+        ];
+        $jwt = $this->object->encode($dados);
+        $decode = $this->object->decode($jwt->getResponse());
+        $this->assertInstanceOf(Decode::class, $decode);
+        $response = $decode->getResponse();
+        $this->assertInternalType('array', $response);
+        $this->assertEquals($dados, $response);
     }
 
     /**
