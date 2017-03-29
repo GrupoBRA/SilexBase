@@ -61,7 +61,7 @@ class JWTService extends BaseService
                 ]
             );
 
-            if ($response->getStatusCode() === '200') {
+            if ($response->getStatusCode() === 200) {
                 $responseObj = \json_decode($response->getBody(), true);
 
                 return $responseObj['data'];

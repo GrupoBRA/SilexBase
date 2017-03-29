@@ -67,11 +67,11 @@ class JWTServiceTest extends TestCase
             ]
         ];
         $jwt = $this->object->encode($dados);
-        $decode = $this->object->decode($jwt->getResponse());
-        $this->assertInstanceOf(Decode::class, $decode);
-        $response = $decode->getResponse();
+        $response = $this->object->decode($jwt->getResponse());
+//        $this->assertInstanceOf(Decode::class, $decode);
+//        $response = $decode->getResponse();
         $this->assertInternalType('array', $response);
-        $this->assertEquals($dados, $response);
+        $this->assertEquals($dados, $response['data']);
     }
 
     /**
