@@ -26,42 +26,6 @@ class JWTService extends BaseService
 {
 
     /**
-     * Decodifica um JSON Web Token.
-     *
-     * @param string $jwt
-     *            JSON Web Token
-     *
-     * @return array Dados do token decodificado
-     *
-     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
-     */
-    public function decode($jwt)
-    {
-        try {
-            $response = $this->app['guzzle']->get(
-                    URL_JWT_API . 'decode/', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $jwt
-                ]
-                    ]
-            );
-
-            if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->app['monolog']->error($message);
-                throw new Exception('Não foi possível decodificar o token de acesso!');
-            }
-            
-            $responseObj = \json_decode($response->getBody(), true);
-
-            return $responseObj['data'];
-        } catch (Exception $e) {
-            $this->app['monolog']->error($e->getTraceAsString());
-            throw new Exception('Não foi possível decodificar o token de acesso!');
-        }
-    }
-
-    /**
      * Adiciona dados em $dados a um token já existente.
      *
      * @param array   $dados
@@ -83,9 +47,9 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->post(
-                    URL_JWT_API . 'push/', [
+                URL_JWT_API . 'push/', [
                 'body' => \json_encode(
-                        [
+                    [
                             'data' => $dados
                         ]
                 ),
@@ -117,7 +81,7 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->get(
-                    URL_JWT_API . 'check/', [
+                URL_JWT_API . 'check/', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
