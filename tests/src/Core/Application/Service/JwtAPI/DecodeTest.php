@@ -2,6 +2,8 @@
 
 namespace OnyxERP\Core\Application\Service\JwtAPI;
 
+use \Exception;
+use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
 use \PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +25,18 @@ class DecodeTest extends TestCase
     {
         chdir(__DIR__);
         $app = include '../../../../../../bootstrap.php';
-        $this->object = new Decode($app);
+        
+        $dados = [
+            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
+            "app" => [
+                "id" => "99",
+                "apikey" => "57c974f37c4f8",
+                "name" => "Dash"
+            ]
+        ];
+        $encode = new Encode($app, $dados);
+        $jwt = $encode->getResponse();
+        $this->object = new Decode($app, $jwt);
     }
 
     /**
@@ -32,5 +45,25 @@ class DecodeTest extends TestCase
      */
     protected function tearDown()
     {
+    }
+    
+    /**
+     * @covers OnyxERP\Core\Application\Service\JwtAPI\Decode::__construct
+     */
+    public function testDecodeWithSuccess()
+    {
+        $response = $this->object->getResponse();
+        $this->assertInternalType('array', $response);
+    }
+    /**
+     * @covers OnyxERP\Core\Application\Service\JwtAPI\Decode::__construct
+     * @expectedException Exception
+     */
+    public function testDecodeWithoutSuccess()
+    {
+        chdir(__DIR__);
+        $app = include '../../../../../../bootstrap.php';
+        
+        $this->object = new Decode($app, null);
     }
 }
