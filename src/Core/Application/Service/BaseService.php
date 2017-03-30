@@ -109,7 +109,7 @@ class BaseService
         return $this;
     }
     /**
-     * 
+     *
      * @param mixed $response
      * @return \OnyxERP\Core\Application\Service\BaseService
      */
@@ -121,7 +121,7 @@ class BaseService
             
     
     /**
-     * 
+     *
      * @return string
      */
     public function getResponse()
