@@ -79,12 +79,5 @@ class Encode extends BaseService
             $this->exceptionRequest($message);
         }
     }
-    /**
-     * 
-     * @return string
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
+    
 }

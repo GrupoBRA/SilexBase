@@ -37,7 +37,7 @@ class BaseService
     protected $app;
     /**
      *
-     * @var type 
+     * @var mixed $response
      */
     protected $response;
 
@@ -107,5 +107,25 @@ class BaseService
     {
         $this->jwt = $jwt;
         return $this;
+    }
+    /**
+     * 
+     * @param mixed $response
+     * @return \OnyxERP\Core\Application\Service\BaseService
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
+        return $this;
+    }
+            
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

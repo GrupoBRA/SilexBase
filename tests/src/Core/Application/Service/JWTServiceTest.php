@@ -2,8 +2,6 @@
 
 namespace OnyxERP\Core\Application\Service;
 
-use \Exception;
-use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
 use \PHPUnit\Framework\TestCase;
 
 /**
@@ -36,37 +34,7 @@ class JWTServiceTest extends TestCase
     {
     }
 
-    /**
-     * @covers OnyxERP\Core\Application\Service\JWTService::decode
-     */
-    public function testDecodeWithSuccess()
-    {
-        chdir(__DIR__);
-        $app = include '../../../../../bootstrap.php';
-        $dados = [
-            "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
-            "app" => [
-                "id" => "99",
-                "apikey" => "57c974f37c4f8",
-                "name" => "Dash"
-            ]
-        ];
-        $encode = new Encode($app, $dados);
-        $jwt = $encode->getResponse();
-        $response = $this->object->decode($jwt);
-//        $this->assertInstanceOf(Decode::class, $decode);
-//        $response = $decode->getResponse();
-        $this->assertInternalType('array', $response);
-        $this->assertEquals($dados, $response['data']);
-    }
-    /**
-     * @covers OnyxERP\Core\Application\Service\JWTService::decode
-     * @expectedException Exception
-     */
-    public function testDecodeWithoutSuccess()
-    {        
-        $this->object->decode(null);
-    }
+    
 
     /**
      * @covers OnyxERP\Core\Application\Service\JWTService::push
