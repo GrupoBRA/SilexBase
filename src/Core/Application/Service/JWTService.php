@@ -47,9 +47,9 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->post(
-                    URL_JWT_API . 'push/', [
+                URL_JWT_API . 'push/', [
                 'body' => \json_encode(
-                        [
+                    [
                             'data' => $dados
                         ]
                 ),
@@ -81,7 +81,7 @@ class JWTService extends BaseService
     {
         try {
             $response = $this->getApp()['guzzle']->get(
-                    URL_JWT_API . 'check/', [
+                URL_JWT_API . 'check/', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]

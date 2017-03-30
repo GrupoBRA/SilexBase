@@ -24,7 +24,7 @@ class Encode extends BaseService
     /**
      * Build payload from data
      *
-     * @param array $dados
+     * @param  array $dados
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -79,5 +79,4 @@ class Encode extends BaseService
             $this->exceptionRequest($message);
         }
     }
-    
 }
