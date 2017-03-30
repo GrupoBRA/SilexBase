@@ -20,7 +20,38 @@ use const \URL_JWT_API;
  */
 class Encode extends BaseService
 {
-    private $response;
+
+    /**
+     * Build payload from data
+     *
+     * @param array $dados
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    private function buildPayload(array $dados)
+    {
+        if (!isset($dados['app']['apikey'])) {
+            throw new \InvalidArgumentException('apikey não informada!');
+        }
+        $body = [
+            'apiKey' => \base64_encode($dados['app']['apikey']),
+            'data' => $dados
+        ];
+        return [
+            'body' => \json_encode($body)
+        ];
+    }
+    /**
+     *
+     * @param string $message
+     * @param string $exception
+     * @throws Exception
+     */
+    private function exceptionRequest($message, $exception = 'Não foi possível decodificar o token de acesso!')
+    {
+        $this->app['monolog']->error($message);
+        throw new \Exception($exception);
+    }
     /**
      *
      * @param Application $app
@@ -32,31 +63,26 @@ class Encode extends BaseService
     {
         try {
             parent::__construct($app);
-            $payload = [
-                'body' => \json_encode(
-                    [
-                            'apiKey' => \base64_encode($dados['app']['apikey']),
-                            'data' => $dados
-                        ]
-                )
-                    ];
+            $payload = $this->buildPayload($dados);
             $response = $this->app['guzzle']->post(URL_JWT_API . 'encode/', $payload);
 
             if ($response->getStatusCode() !== 200) {
                 $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->app['monolog']->error($message);
-                throw new Exception('Não foi possível decodificar o token de acesso!');
+                $this->exceptionRequest($message);
             }
-            
+
             $responseObj = \json_decode($response->getBody(), true);
 
             $this->response = $responseObj['access_token'];
         } catch (Exception $e) {
-            $this->app['monolog']->error($e);
-            throw new Exception('Não foi possível obter o token de acesso!');
+            $message = sprintf('%s', $e->getMessage());
+            $this->exceptionRequest($message);
         }
     }
-    
+    /**
+     * 
+     * @return string
+     */
     public function getResponse()
     {
         return $this->response;

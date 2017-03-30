@@ -35,6 +35,11 @@ class BaseService
      * @var Application
      */
     protected $app;
+    /**
+     *
+     * @var type 
+     */
+    protected $response;
 
     /**
      * Constructor of BaseService
