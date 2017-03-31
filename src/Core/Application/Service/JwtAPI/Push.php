@@ -52,7 +52,7 @@ class Push extends BaseService
 
             $responseObj = \json_decode($response->getBody(), true);
 
-            return $responseObj['access_token'];
+            $this->response = $responseObj['access_token'];
         } catch (Exception $e) {
             throw new Exception('Não foi possível alterar o token de acesso!');
         }
