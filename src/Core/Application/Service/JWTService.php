@@ -3,10 +3,8 @@
 namespace OnyxERP\Core\Application\Service;
 
 use \DomainException;
-use \Exception;
-use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
+use \OnyxERP\Core\Application\Service\JwtAPI\Decode;
 use \Symfony\Component\HttpFoundation\Request;
-use const \URL_JWT_API;
 
 /**
  * JWTService.
@@ -24,34 +22,6 @@ use const \URL_JWT_API;
  */
 class JWTService extends BaseService
 {
-    /**
-     *
-     * @param string $jwt
-     *
-     * @return bool true em caso de token válido e ainda ativo
-     *
-     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
-     */
-    public function checkJWT($jwt)
-    {
-        try {
-            $response = $this->getApp()['guzzle']->get(
-                URL_JWT_API . 'check/', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $jwt
-                ]
-                    ]
-            );
-
-            if ($response->getStatusCode() === '200') {
-                $responseObj = \json_decode($response->getBody(), true);
-
-                return $responseObj['success'];
-            }
-        } catch (Exception $e) {
-            throw new Exception('Não foi possível verificar o token de acesso!');
-        }
-    }
 
     /**
      * Retorna os dados no payload do token informado em $jwt, se este for válido.
@@ -63,7 +33,8 @@ class JWTService extends BaseService
      */
     public function getJWTPayload($jwt)
     {
-        $payload = $this->obj2array($this->decode($jwt));
+        $decode = (new Decode($this->app, $jwt))->getResponse();
+        $payload = $this->obj2array($decode);
 
         return \is_array($payload['data']) ? $payload : false;
     }
