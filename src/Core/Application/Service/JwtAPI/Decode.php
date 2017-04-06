@@ -24,7 +24,8 @@ class Decode extends BaseService
         try {
             parent::__construct($app);
             $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'decode/', [
+                URL_JWT_API . 'decode/',
+                [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
