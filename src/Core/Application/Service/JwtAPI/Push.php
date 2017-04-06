@@ -34,7 +34,8 @@ class Push extends BaseService
         try {
             parent::__construct($app);
             $response = $this->app['guzzle']->post(
-                URL_JWT_API . 'push/', [
+                URL_JWT_API . 'push/',
+                [
                 'body' => \json_encode(
                     [
                             'data' => $dados
