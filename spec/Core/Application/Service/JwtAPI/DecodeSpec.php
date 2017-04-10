@@ -2,19 +2,23 @@
 
 namespace spec\OnyxERP\Core\Application\Service\JwtAPI;
 
-use OnyxERP\Core\Application\Service\JwtAPI\Decode;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use \OnyxERP\Core\Application\Service\JwtAPI\Decode;
+use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
+use \PhpSpec\ObjectBehavior;
 
 class DecodeSpec extends ObjectBehavior
 {
+    
+    protected $app;
+    
+    protected $jwt;
     /**
      *
      */
     public function let()
     {
         chdir(__DIR__);
-        $app = require './../../../../../bootstrap.php';
+        $this->app = require './../../../../../bootstrap.php';
         $dados = [
             "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
             "app" => [
@@ -23,7 +27,9 @@ class DecodeSpec extends ObjectBehavior
                 "name" => "Dash"
             ]
         ];
-        $this->beConstructedWith($app);
+        $encode = new Encode($this->app, $dados);
+        $this->jwt = $encode->getResponse();
+        $this->beConstructedWith($this->app);
     }
     /**
      * 
@@ -32,4 +38,5 @@ class DecodeSpec extends ObjectBehavior
     {
         $this->shouldHaveType(Decode::class);
     }
+    
 }
