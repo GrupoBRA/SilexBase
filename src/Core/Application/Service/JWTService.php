@@ -48,7 +48,8 @@ class JWTService extends BaseService
      */
     public function getJWTPayload($jwt)
     {
-        $payload = $this->obj2array($this->decode($jwt));
+        $decode = (new Decode($this->app, $jwt))->getResponse();
+        $payload = $this->obj2array($decode);
 
         return \is_array($payload['data']) ? $payload : false;
     }
@@ -111,28 +112,7 @@ class JWTService extends BaseService
     public function checkJWT($jwt)
     {
         try {
-            $response = $this->guzzle->get(
-                URL_JWT_API.'check/', [
-                    'exceptions' => false,
-                    'headers' => [
-                        'Authorization' => 'Bearer '. $jwt,
-                    ],
-                ]
-            );
-
-            $responseObj = \json_decode($response->getBody(), true);
-            
-            if(\json_last_error() > 0) {
-                throw new Exception("A resposta enviada pela JwtAPI não pôde ser processada!");
-            }
-
-            if ($response->getStatusCode() === 200) {
-                return $responseObj['success'];
-            } elseif($response->getStatusCode() === 403) {
-                throw new Exception("Token expirado ou inválido!");
-            } else {
-                throw new Exception("Problemas com a JwtAPI. Tente novamente em instantes.");
-            }
+            return (new CheckJWT($this->app, $jwt))->getResponse();
 
         } catch (Exception $e) {
             //repassando a exception

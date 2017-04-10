@@ -2,16 +2,16 @@
 
 namespace spec\OnyxERP\Core\Application\Service\JwtAPI;
 
-use \OnyxERP\Core\Application\Service\JwtAPI\Decode;
+use \OnyxERP\Core\Application\Service\JwtAPI\CheckJWT;
 use \OnyxERP\Core\Application\Service\JwtAPI\Encode;
 use \PhpSpec\ObjectBehavior;
 
-class DecodeSpec extends ObjectBehavior
+class CheckJWTSpec extends ObjectBehavior
 {
-    
+
     protected $app;
-    
     protected $jwt;
+
     /**
      *
      */
@@ -29,14 +29,18 @@ class DecodeSpec extends ObjectBehavior
         ];
         $encode = new Encode($this->app, $dados);
         $this->jwt = $encode->getResponse();
-        $this->beConstructedWith($this->app);
+        $this->beConstructedWith($this->app, $this->jwt);
     }
-    /**
-     * 
-     */
-    public function it_is_initializable()
+
+    function it_is_initializable()
     {
-        $this->shouldHaveType(Decode::class);
+        $this->shouldHaveType(CheckJWT::class);
     }
-    
+
+    public function it_should_return_check_jwt_without_success()
+    {
+        $this->beConstructedWith($this->app, '');
+        $this->shouldThrow('\Exception')->duringGetResponse();
+    }
+
 }

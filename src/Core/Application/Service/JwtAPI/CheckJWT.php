@@ -8,7 +8,7 @@ use \Silex\Application;
 use const \URL_JWT_API;
 
 /**
- * Decode.
+ * CheckJWT.
  *
  * PHP version 5.6
  *
@@ -18,25 +18,22 @@ use const \URL_JWT_API;
  *
  * @version 1.13.0
  */
-class Decode extends BaseService
+class CheckJWT extends BaseService
 {
     /**
-     * Decodifica um JSON Web Token.
      *
      * @param string $jwt
-     *            JSON Web Token
      *
-     * @return array Dados do token decodificado
+     * @return bool true em caso de token válido e ainda ativo
      *
      * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
      */
     public function __construct(Application $app, $jwt)
     {
         try {
-            parent::__construct($app);
+            parent::__construct($app, $jwt);
             $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'decode/',
-                [
+                URL_JWT_API . 'check/', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
@@ -44,17 +41,17 @@ class Decode extends BaseService
             );
 
             if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->app['monolog']->error($message);
-                throw new Exception('Não foi possível decodificar o token de acesso!');
-            }
+                throw new Exception('Não foi possível verificar o token de acesso!');
+            } elseif($response->getStatusCode() === 403) {
+                throw new Exception("Token expirado ou inválido!");
+            } 
             
             $responseObj = \json_decode($response->getBody(), true);
 
-            $this->response = $responseObj['data'];
+            $this->response = $responseObj['success'];
         } catch (Exception $e) {
-            $this->app['monolog']->error($e->getTraceAsString());
-            throw new Exception('Não foi possível decodificar o token de acesso!');
+            $this->app['monolog']->error($e);
+            throw new Exception('Não foi possível verificar o token de acesso!');
         }
     }
 }
