@@ -1,3 +1,22 @@
+Version 1.5.2:
+Release v1.5.2 Task #32 - SCM - Release v1.5.2
+Merge pull request #31 from BRAConsultoria/issue30CheckJWT
+De acordo com a issue #30
+Update README.md
+Merge tag 'v1.5.1' into develop
+
+Version 1.5.1:
+Release v1.5.1 Task #29 - SCM - Release v1.5.1
+Merge branch 'feature/fix' into develop
+Update travis_init.php
+Update README.md
+Update README.md
+Create travis_init.php
+Create .travis.yml
+Fixes
+Fix PHPCBF e PHP-CS-FIXER Target
+Merge tag 'v1.5.0' into develop
+
 Version 1.5.0:
 Atualizando o composer Task #25 - SCM - Release v1.5.0
 Merge branch 'feature/issue-24' into develop

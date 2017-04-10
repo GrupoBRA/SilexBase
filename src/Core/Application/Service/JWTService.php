@@ -2,9 +2,12 @@
 
 namespace OnyxERP\Core\Application\Service;
 
-use \DomainException;
-use \OnyxERP\Core\Application\Service\JwtAPI\Decode;
-use \Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+use GuzzleHttp\Client;
+use DomainException;
+use Exception;
+use const URL_JWT_API;
 
 /**
  * JWTService.
@@ -15,13 +18,25 @@ use \Symfony\Component\HttpFoundation\Request;
  * PHP version 5.6
  *
  * @author    jfranciscos4 <silvaivctd@gmail.com>
- * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
+ * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE Proprietary
  *
- * @version 1.2.0
+ * @version 1.0.0
  */
 class JWTService extends BaseService
 {
+ 
+    /**
+     *
+     * @var Client Instância do Guzzle 
+     */
+    private $guzzle;
+    
+    public function __construct(Application $app)
+    {
+        parent::__construct($app);
+        $this->guzzle = $app['guzzle'];
+    }
 
     /**
      * Retorna os dados no payload do token informado em $jwt, se este for válido.
@@ -85,5 +100,44 @@ class JWTService extends BaseService
     public function obj2array($obj)
     {
         return \json_decode(\json_encode($obj), true);
+    }
+    
+    /**
+     * @param string $jwt
+     *
+     * @return bool true em caso de token válido e ainda ativo
+     *
+     * @throws Exception em caso de receber um status diferente de 200 da JwtAPI
+     */
+    public function checkJWT($jwt)
+    {
+        try {
+            $response = $this->guzzle->get(
+                URL_JWT_API.'check/', [
+                    'exceptions' => false,
+                    'headers' => [
+                        'Authorization' => 'Bearer '. $jwt,
+                    ],
+                ]
+            );
+
+            $responseObj = \json_decode($response->getBody(), true);
+            
+            if(\json_last_error() > 0) {
+                throw new Exception("A resposta enviada pela JwtAPI não pôde ser processada!");
+            }
+
+            if ($response->getStatusCode() === 200) {
+                return $responseObj['success'];
+            } elseif($response->getStatusCode() === 403) {
+                throw new Exception("Token expirado ou inválido!");
+            } else {
+                throw new Exception("Problemas com a JwtAPI. Tente novamente em instantes.");
+            }
+
+        } catch (Exception $e) {
+            //repassando a exception
+            throw new Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
     }
 }

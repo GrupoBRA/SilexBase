@@ -2,6 +2,8 @@
 
 Biblioteca de Serviço REST do OnyxERP
 
+### Build Status
+[![Build Status](https://travis-ci.com/BRAConsultoria/SilexBase.svg?token=g38qLhkCyz4sqkZFgBiV&branch=develop)](https://travis-ci.com/BRAConsultoria/SilexBase)
 
 # Installation
 
