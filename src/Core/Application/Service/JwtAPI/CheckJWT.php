@@ -36,6 +36,7 @@ class CheckJWT extends BaseService
 
             $this->response = $responseObj['success'];
         } catch (Exception $e) {
+            $this->app['monolog']->error($e);
             throw new Exception('Não foi possível verificar o token de acesso!');
         }
     }

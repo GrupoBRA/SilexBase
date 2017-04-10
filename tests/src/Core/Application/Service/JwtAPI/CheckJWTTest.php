@@ -12,6 +12,10 @@ class CheckJWTTest extends \PHPUnit\Framework\TestCase
      * @var CheckJWT
      */
     protected $object;
+    
+    protected  $jwt;
+    
+    protected $app;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -20,8 +24,8 @@ class CheckJWTTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         chdir(__DIR__);
-        $app = include '../../../../../../bootstrap.php';
-        
+        $this->app = include '../../../../../../bootstrap.php';
+
         $dados = [
             "apiKey" => "NTdjOTc0ZjM3YzRmOA==",
             "app" => [
@@ -30,9 +34,8 @@ class CheckJWTTest extends \PHPUnit\Framework\TestCase
                 "name" => "Dash"
             ]
         ];
-        $encode = new Encode($app, $dados);
-        $jwt = $encode->getResponse();
-        $this->object = new CheckJWT;
+        $encode = new Encode($this->app, $dados);
+        $this->jwt = $encode->getResponse();
     }
 
     /**
@@ -41,7 +44,19 @@ class CheckJWTTest extends \PHPUnit\Framework\TestCase
      */
     protected function tearDown()
     {
+        $this->jwt = null;
+        $this->object = null;
+    }
+    
+    /**
+     * @expectedException Exception
+     */
+    public function testCheckJWTWithoutSuccess()
+    {
         
+//        $this->object = new CheckJWT($this->app, $this->jwt);
+        $this->object = new CheckJWT($this->app, '');
+        $checked = $this->object->getResponse();
     }
 
 }
