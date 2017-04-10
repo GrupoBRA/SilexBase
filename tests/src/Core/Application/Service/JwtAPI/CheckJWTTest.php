@@ -49,14 +49,23 @@ class CheckJWTTest extends \PHPUnit\Framework\TestCase
     }
     
     /**
+     * @covers OnyxERP\Core\Application\Service\JwtAPI\CheckJWT::getResponse
      * @expectedException Exception
      */
     public function testCheckJWTWithoutSuccess()
     {
-        
-//        $this->object = new CheckJWT($this->app, $this->jwt);
         $this->object = new CheckJWT($this->app, '');
-        $checked = $this->object->getResponse();
+        $this->object->getResponse();
+    }
+    
+    /**
+     * @covers OnyxERP\Core\Application\Service\JwtAPI\CheckJWT::getResponse
+     */
+    public function testCheckJWTWithSuccess()
+    {        
+        $this->object = new CheckJWT($this->app, $this->jwt);
+        $condition = $this->object->getResponse();
+        $this->assertTrue($condition);
     }
 
 }

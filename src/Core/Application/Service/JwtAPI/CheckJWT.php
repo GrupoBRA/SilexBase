@@ -7,6 +7,17 @@ use \OnyxERP\Core\Application\Service\BaseService;
 use \Silex\Application;
 use const \URL_JWT_API;
 
+/**
+ * CheckJWT.
+ *
+ * PHP version 5.6
+ *
+ * @author    jfranciscos4 <silvaivctd@gmail.com>
+ * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
+ * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE Proprietary
+ *
+ * @version 1.13.0
+ */
 class CheckJWT extends BaseService
 {
     /**
