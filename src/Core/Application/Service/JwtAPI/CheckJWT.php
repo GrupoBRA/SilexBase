@@ -42,7 +42,10 @@ class CheckJWT extends BaseService
 
             if ($response->getStatusCode() !== 200) {
                 throw new Exception('Não foi possível verificar o token de acesso!');
-            }
+            } elseif($response->getStatusCode() === 403) {
+                throw new Exception("Token expirado ou inválido!");
+            } 
+            
             $responseObj = \json_decode($response->getBody(), true);
 
             $this->response = $responseObj['success'];
