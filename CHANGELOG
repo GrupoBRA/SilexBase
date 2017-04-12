@@ -1,3 +1,9 @@
+Version 1.6.1:
+Release v1.6.1 Task #39 - SCM - Release v1.6.1
+Merge pull request #38 from BRAConsultoria/issue37CorrecaoJwtService
+De acordo com a issue #37
+Merge tag 'v1.6.0' into develop
+
 Version 1.6.0:
 Release v1.6.0 Task #36 - SCM - Release v1.6.0
 Release v1.6.0 Task #36 - SCM - Release v1.6.0
