@@ -2,6 +2,10 @@
 
 Biblioteca de Serviço REST do OnyxERP
 
+[![Run Status](https://api.shippable.com/projects/58ed80a2957294070031294b/badge?branch=develop)](https://app.shippable.com/github/BRAConsultoria/SilexBase)
+
+[![Coverage Badge](https://api.shippable.com/projects/58ed80a2957294070031294b/coverageBadge?branch=develop)](https://app.shippable.com/github/BRAConsultoria/SilexBase)
+
 # Installation
 
 This extension requires:
