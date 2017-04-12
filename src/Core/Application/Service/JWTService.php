@@ -21,14 +21,14 @@ use const URL_JWT_API;
  * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
  * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE Proprietary
  *
- * @version 1.0.0
+ * @version 1.6.0
  */
 class JWTService extends BaseService
 {
  
     /**
      *
-     * @var Client Instância do Guzzle 
+     * @var Client Instância do Guzzle
      */
     private $guzzle;
     
@@ -113,7 +113,6 @@ class JWTService extends BaseService
     {
         try {
             return (new CheckJWT($this->app, $jwt))->getResponse();
-
         } catch (Exception $e) {
             //repassando a exception
             throw new Exception($e->getMessage(), $e->getCode(), $e->getPrevious());

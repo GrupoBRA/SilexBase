@@ -16,7 +16,7 @@ use const \URL_JWT_API;
  * @copyright (c) 2007/2017, Grupo BRA - Solucoes para Gestao Publica
  * @license   https://github.com/BRAConsultoria/Core/blob/master/LICENSE Proprietary
  *
- * @version 1.13.0
+ * @version 1.6.0
  */
 class CheckJWT extends BaseService
 {
@@ -33,7 +33,8 @@ class CheckJWT extends BaseService
         try {
             parent::__construct($app, $jwt);
             $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'check/', [
+                URL_JWT_API . 'check/',
+                [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $jwt
                 ]
@@ -42,9 +43,9 @@ class CheckJWT extends BaseService
 
             if ($response->getStatusCode() !== 200) {
                 throw new Exception('Não foi possível verificar o token de acesso!');
-            } elseif($response->getStatusCode() === 403) {
+            } elseif ($response->getStatusCode() === 403) {
                 throw new Exception("Token expirado ou inválido!");
-            } 
+            }
             
             $responseObj = \json_decode($response->getBody(), true);
 
