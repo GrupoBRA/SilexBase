@@ -1,3 +1,22 @@
+Version 1.6.0:
+Release v1.6.0 Task #36 - SCM - Release v1.6.0
+Release v1.6.0 Task #36 - SCM - Release v1.6.0
+Merge pull request #35 from BRAConsultoria/Issue34SocialService
+De acordo com a issue #34
+Status Badge and Coverage Badge
+Update and rename .travis.yml to .shippable.yml
+Update README.md
+Update .travis.yml
+Merge branch 'feature/issue-26' into develop
+Substituição do método pelo o serviço JWTService Task #26 - RF - Service JwtAPI/CheckJwt
+final Task #26 - RF - Service JwtAPI/CheckJwt
+Merge branch 'develop' into feature/issue-26
+Parcial implement Task #26 - RF - Service JwtAPI/CheckJwt
+fix tests Task #26 - RF - Service JwtAPI/CheckJwt
+Merge tag 'v1.5.2' into develop
+parcial Task #26 - RF - Service JwtAPI/CheckJwt
+parcial Task #26 - RF - Service JwtAPI/CheckJwt
+
 Version 1.5.2:
 Release v1.5.2 Task #32 - SCM - Release v1.5.2
 Merge pull request #31 from BRAConsultoria/issue30CheckJWT

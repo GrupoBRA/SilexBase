@@ -2,8 +2,9 @@
 
 Biblioteca de Serviço REST do OnyxERP
 
-### Build Status
-[![Build Status](https://travis-ci.com/BRAConsultoria/SilexBase.svg?token=g38qLhkCyz4sqkZFgBiV&branch=develop)](https://travis-ci.com/BRAConsultoria/SilexBase)
+[![Run Status](https://api.shippable.com/projects/58ed80a2957294070031294b/badge?branch=develop)](https://app.shippable.com/github/BRAConsultoria/SilexBase)
+
+[![Coverage Badge](https://api.shippable.com/projects/58ed80a2957294070031294b/coverageBadge?branch=develop)](https://app.shippable.com/github/BRAConsultoria/SilexBase)
 
 # Installation
 
