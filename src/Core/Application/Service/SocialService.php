@@ -73,6 +73,42 @@ class SocialService
         }
     }
 
+    /**
+     *
+     * @param string $needle
+     * @return type
+     * @throws Exception
+     */
+    public function searchPessoaFisica($needle)
+    {
+        $this->app['monolog']->debug($needle);
+        try {
+            $guzzle = $this->app['guzzle'];
+            $url = URL_SOCIAL_API . 'pessoa-fisica/search/' . \preg_replace('/[\/]{1,}/', '', $needle) .'/';
+
+            $response = $guzzle->get($url, [
+                'exceptions'    => false,
+                'headers'       => [
+                    'Authorization' => "Bearer ". $this->getJwt()
+                ]
+            ]);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+            
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return $responseObj['data'];
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível obter os dados!');
+        }
+    }
+
     public function getJwt()
     {
         return $this->jwt;

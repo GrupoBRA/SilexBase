@@ -34,6 +34,7 @@ class PushTest extends TestCase
         ];
         $encode = new Encode($app, $dados);
         $jwt = $encode->getResponse();
+        $dados['teste'] = true;
         $this->object = new Push($app, $dados, $jwt);
     }
 
