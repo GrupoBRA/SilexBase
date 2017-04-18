@@ -76,7 +76,7 @@ class SocialService
     /**
      *
      * @param string $needle
-     * @return type
+     * @return mixed
      * @throws Exception
      */
     public function searchPessoaFisica($needle)
@@ -87,6 +87,8 @@ class SocialService
             $url = URL_SOCIAL_API . 'pessoa-fisica/search/' . \preg_replace('/[\/]{1,}/', '', $needle) .'/';
 
             $response = $guzzle->get($url, [
+                'connect_timeout' => 10,
+                'timeout' => 10,
                 'exceptions'    => false,
                 'headers'       => [
                     'Authorization' => "Bearer ". $this->getJwt()
@@ -96,7 +98,7 @@ class SocialService
             $responseText = $response->getBody()->getContents();
 
             $this->app['monolog']->debug($responseText);
-            
+
             if ($response->getStatusCode() === 200) {
                 $responseObj = \json_decode($responseText, true);
 
@@ -106,6 +108,47 @@ class SocialService
             }
         } catch (Exception $e) {
             throw new Exception('Não foi possível obter os dados!');
+        }
+    }
+
+    /**
+     * Envia um post ao end-point responsável pela inserção de uma nova pessoa em Social
+     *
+     * @return array Array com a resposta e o status code
+     * @throws Exception
+     */
+    public function inserir(array $payload)
+    {
+        try {
+
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'body' => \json_encode($payload),
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer ' . $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->post(URL_SOCIAL_API . 'pessoa-fisica/inserir', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return $responseObj['data'];
+            } else {
+                return false;
+            }
+        } catch (Exception $e){
+            throw new Exception('Não foi possível inserir uma nova PF em SocialAPI!');
         }
     }
 
