@@ -37,10 +37,12 @@ class Decode extends BaseService
             $response = $this->app['guzzle']->get(
                 URL_JWT_API . 'decode/',
                 [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $jwt
-                ]
+                    'connect_timeout' => 10,
+                    'timeout' => 10,
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $jwt
                     ]
+                ]
             );
 
             if ($response->getStatusCode() !== 200) {
