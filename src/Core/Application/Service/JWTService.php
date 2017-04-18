@@ -4,6 +4,7 @@ namespace OnyxERP\Core\Application\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 use OnyxERP\Core\Application\Service\JwtAPI\CheckJWT;
+use OnyxERP\Core\Application\Service\JwtAPI\Decode;
 use Silex\Application;
 use GuzzleHttp\Client;
 use DomainException;
