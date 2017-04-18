@@ -39,7 +39,7 @@ class SocialServiceTest extends TestCase
     }
 
     /**
-     * @covers OnyxERP\Core\Application\Service\SocialService
+     * @covers OnyxERP\Core\Application\Service\SocialService::buscaNomePessoaFisica
      */
     public function testBuscaNomePessoaFisica()
     {
@@ -50,5 +50,16 @@ class SocialServiceTest extends TestCase
         $this->assertTrue(isset($pessoa['nome']));
         $this->assertTrue(isset($pessoa['nascimento']));
         $this->assertTrue(isset($pessoa['sexo']));
+    }
+
+    /**
+     * Devido a necessidade de token para este end-point, ainda não foi possível
+     * fazer o teste unitário com uma requisição bem sucedida.
+     * @covers OnyxERP\Core\Application\Service\SocialService::searchPessoaFisica
+     * @expectedException \Exception
+     */
+    public function testSearchPessoaFisica()
+    {
+        $this->object->searchPessoaFisica('02401627146');
     }
 }
