@@ -1,3 +1,7 @@
+Version 1.7.0:
+Issue 40 - Adição de Recurso em SocialService(PR) (#41)
+Merge tag 'v1.6.1' into develop
+
 Version 1.6.1:
 Release v1.6.1 Task #39 - SCM - Release v1.6.1
 Merge pull request #38 from BRAConsultoria/issue37CorrecaoJwtService
