@@ -152,6 +152,47 @@ class SocialService
         }
     }
 
+    /**
+     * Envia um PUT ao end-point responsável pela atualização de informações de 
+     * de contato em SocialAPI
+     *
+     * @return mixed Array com a resposta ou Boolean false
+     * @throws Exception
+     */
+    public function updatePfTable($table, $id, $data)
+    {
+        try {
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'body' => \json_encode($data),
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer '. $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->put(URL_SOCIAL_API .'pessoa-fisica/'. $table .'/'. $id .'/', $conf);
+            
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : false);
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("Falha ao atualizar $table!");
+        }
+    }
+    
     public function getJwt()
     {
         return $this->jwt;
