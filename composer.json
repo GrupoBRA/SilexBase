@@ -1,12 +1,13 @@
 {
     "name": "onyxerp/silexbase",
     "description": "Silex Base para criar API REST para OnyxERP",
-    "version": "1.6.1",
+    "version": "1.7.1",
     "type": "library",
-    "time": "2017-04-12",
+    "time": "2017-04-19",
     "homepage": "https://github.com/BRAConsultoria/SilexBase",
     "license": "proprietary",
-    "authors": [{
+    "authors": [
+	{
             "name": "Community contributors",
             "homepage": "https://github.com/BRAConsultoria/SilexBase/graphs/contributors"
         }
@@ -56,7 +57,8 @@
         "friendsofphp/php-cs-fixer": "*",
         "braconsultoria/jwt-api-extension": "*"
     },
-    "repositories": [{
+    "repositories": [
+	{
             "type": "git",
             "url": "https://github.com/BRAConsultoria/JWTApiExtension"
         }

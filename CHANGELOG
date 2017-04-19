@@ -1,3 +1,14 @@
+Version 1.7.1:
+Update composer.json v1.7.1 Task #46 - SCM - Release v1.7.1
+Merge branch 'feature/issue-44' into develop
+Remove Shippable coverage Task #44 - Refactoring Code in bootstrap.php
+refactoring code based in PHPMD Task #44 - Refactoring Code in bootstrap.php
+Merge tag 'v1.7.0' into develop
+
+Version 1.7.0:
+Issue 40 - Adição de Recurso em SocialService(PR) (#41)
+Merge tag 'v1.6.1' into develop
+
 Version 1.6.1:
 Release v1.6.1 Task #39 - SCM - Release v1.6.1
 Merge pull request #38 from BRAConsultoria/issue37CorrecaoJwtService

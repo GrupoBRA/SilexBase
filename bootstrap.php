@@ -7,12 +7,10 @@
  *
  * PHP version 5.6
  *
- * @author    jfranciscos4 <silvaivctd@gmail.com>
- * @author    rinzler <github.com/feliphebueno>
  * @copyright (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
- * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE (c) 2007/2016, Grupo BRA - Solucoes para Gestao Publica
+ * @license https://github.com/BRAConsultoria/Core/blob/master/LICENSE Proprietary
  *
- * @version   1.0.9
+ * @version   1.7.1
  */
 date_default_timezone_set('America/Recife');
 ini_set('display_errors', 1); // don't show any errors...
@@ -36,9 +34,50 @@ use \Symfony\Component\HttpFoundation\Response;
 
 chdir(__DIR__);
 
-include_once './config/urls_apis.php';
+foreach (array(__DIR__ . '/../../../config/urls_apis.php', __DIR__ . '/../../config/urls_apis.php', __DIR__ . '/../config/urls_apis.php', __DIR__ . '/config/urls_apis.php') as $config) {
+    if (file_exists($config)) {
+        if (!defined('CONFIG_URL_APIS')) {
+            define('CONFIG_URL_APIS', $config);
+        }
+        break;
+    }
+}
+if (!defined('CONFIG_URL_APIS')) {
+    fwrite(
+            STDERR, 'You need to set up the project dependencies using config/url_apis.php:' . PHP_EOL . PHP_EOL
+    );
 
-$loader = require __DIR__ . '/vendor/autoload.php';
+    die(1);
+}
+
+unset($config);
+
+include_once CONFIG_URL_APIS;
+
+foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        if (!defined('COMPOSER_AUTOLOAD')) {
+            define('COMPOSER_AUTOLOAD', $file);
+        }
+
+        break;
+    }
+}
+
+unset($file);
+
+if (!defined('COMPOSER_AUTOLOAD')) {
+    fwrite(
+            STDERR, 'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+            '    composer install' . PHP_EOL . PHP_EOL .
+            'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+
+    die(1);
+}
+
+$loader = require COMPOSER_AUTOLOAD;
+
 
 $app = new Application();
 $app['debug'] = true;
@@ -131,11 +170,16 @@ $app->before(function (Request $request, Application $app) {
         'OPTIONS_url'
     );
 
-    if (! in_array($route, $listaRouteLiberada)) {
+    if (!in_array($route, $listaRouteLiberada)) {
         try {
             $jwtService = new JWTService($app);
-
-            return $jwtService->checkJWT($jwtService->getAuthorizationJWT($request));
+            $jwt = $jwtService->getAuthorizationJWT($request);
+            $checked = $jwtService->checkJWT($jwt);
+            $app['jwt.token'] = null;
+            if ($checked) {
+                $app['jwt.token'] = $jwt;
+            }
+            return $checked;
         } catch (Exception $e) {
             return new JsonResponse([
                 'error' => $e->getMessage()
@@ -145,7 +189,9 @@ $app->before(function (Request $request, Application $app) {
 });
 
 $app->after(function (Request $request, Response $response) {
-    if ($request) {}
+    if ($request) {
+
+    }
     $response->headers->set('Accept-Encoding', 'GZIP');
     $response->headers->set('Content-Type', 'application/json');
     $response->headers->set('Content-Type', 'UTF-8');
@@ -159,18 +205,13 @@ $app->after(function (Request $request, Response $response) {
  * Implementação do CORS https://github.com/BRAConsultoria/OnyxERP/issues/74
  */
 $app->match('{url}', function ($url) {
-    return new JsonResponse([
-        'status' => 'Ok'
-    ], 200, [
-        'WWW-Authenticate' => 'Bearer'
-    ]);
-})
-    ->assert('url', '.*')
-    ->method('OPTIONS');
-/*
- * Recursos Habilitados
- *
- * basta adiciona uma nova linha para disponibilização de novos recursos REST API
- */
-// $app->mount('/v1/pessoa-fisica', new PessoaFisicaControllerProvider());
+            return new JsonResponse([
+                'status' => 'Ok'
+                    ], 200, [
+                'WWW-Authenticate' => 'Bearer'
+            ]);
+        })
+        ->assert('url', '.*')
+        ->method('OPTIONS');
+
 return $app;
