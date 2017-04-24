@@ -193,6 +193,47 @@ class SocialService
         }
     }
     
+    /**
+     * Envia um PATCH ao end-point responsável pela atualização de informações de 
+     * verificadas em SocialAPI
+     *
+     * @return mixed Array com a resposta ou Boolean false
+     * @throws Exception
+     */
+    public function verif($id, $tipo, $info)
+    {
+        try {
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'body' => \json_encode(['info' => $info]),
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer '. $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->patch(URL_SOCIAL_API .'pessoa-fisica/verif/'. $id .'/tipo/'. $tipo .'/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : false);
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("Falha ao acessar a SocialAPI.");
+        }
+    }
+    
     public function getJwt()
     {
         return $this->jwt;
