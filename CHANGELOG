@@ -1,3 +1,8 @@
+Version 1.8.0:
+Release v1.8.0
+Issue 47 - Adição de novos recursos(PR) (#48)
+Merge tag 'v1.7.1' into develop
+
 Version 1.7.1:
 Update composer.json v1.7.1 Task #46 - SCM - Release v1.7.1
 Merge branch 'feature/issue-44' into develop
