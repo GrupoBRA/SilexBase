@@ -89,7 +89,7 @@ foreach (array(__DIR__ . '/../../../config/routes.php', __DIR__ . '/../../config
 }
 if (!defined('CONFIG_ROUTES')) {
     fwrite(
-            STDERR, 'You need to set up the project dependencies using config/route.php:' . PHP_EOL . PHP_EOL
+            STDERR, 'You need to set up the project dependencies using config/routes.php:' . PHP_EOL . PHP_EOL
     );
 
     die(1);
@@ -127,7 +127,7 @@ $app->register(new GuzzleServiceProvider(), array(
  */
 if ($app['debug']) {
     $app->register(new MonologServiceProvider(), array(
-        'monolog.logfile' => __DIR__ . '/log/development.log'
+        'monolog.logfile' => __DIR__ . '/../../../log/development.log'
     ));
 
     $app->extend('monolog', function ($monolog, $app) {
