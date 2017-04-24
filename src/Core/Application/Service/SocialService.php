@@ -120,6 +120,7 @@ class SocialService
     public function inserir(array $payload)
     {
         try {
+
             $conf = [
                 'connect_timeout' => 10,
                 'timeout' => 10,
@@ -146,13 +147,13 @@ class SocialService
             } else {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (Exception $e){
             throw new Exception('Não foi possível inserir uma nova PF em SocialAPI!');
         }
     }
 
     /**
-     * Envia um PUT ao end-point responsável pela atualização de informações de
+     * Envia um PUT ao end-point responsável pela atualização de informações de 
      * de contato em SocialAPI
      *
      * @return mixed Array com a resposta ou Boolean false
@@ -193,7 +194,7 @@ class SocialService
     }
     
     /**
-     * Envia um PATCH ao end-point responsável pela atualização de informações de
+     * Envia um PATCH ao end-point responsável pela atualização de informações de 
      * verificadas em SocialAPI
      *
      * @return mixed Array com a resposta ou Boolean false
