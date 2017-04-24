@@ -127,7 +127,7 @@ $app->register(new GuzzleServiceProvider(), array(
  */
 if ($app['debug']) {
     $app->register(new MonologServiceProvider(), array(
-        'monolog.logfile' => __DIR_ . '/log/development.log'
+        'monolog.logfile' => __DIR__ . '/log/development.log'
     ));
 
     $app->extend('monolog', function ($monolog, $app) {
