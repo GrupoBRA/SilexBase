@@ -1,3 +1,8 @@
+Version 1.9.1:
+Update v1.9.1 Task #56 - SCM - Release v1.9.1
+Fix bug Task #55 - Bug path in log monolog
+Merge tag 'v1.9.0' into develop
+
 Version 1.9.0:
 Update v1.9.0 Task #54 - SCM - Release v1.9.0
 Merge branch 'bugfix/issue-50' into develop
