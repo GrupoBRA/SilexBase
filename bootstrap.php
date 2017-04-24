@@ -181,7 +181,6 @@ $app->view(function (array $controllerResult, Request $request) use ($app) {
 });
 
 $listaRouteLiberada = include_once CONFIG_ROUTES;
-$listaRouteLiberada[] = 'OPTIONS_url';
 /*
  * Não remover esse trecho
  */
