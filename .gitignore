@@ -249,3 +249,4 @@ config/databases.php
 .htaccess
 /teste.json
 /log/
+/config/routes.php
