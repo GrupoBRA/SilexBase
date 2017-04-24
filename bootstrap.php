@@ -79,6 +79,25 @@ if (!defined('COMPOSER_AUTOLOAD')) {
 $loader = require COMPOSER_AUTOLOAD;
 
 
+foreach (array(__DIR__ . '/../../../config/routes.php', __DIR__ . '/../../config/routes.php', __DIR__ . '/../config/routes.php', __DIR__ . '/config/routes.php') as $route) {
+    if (file_exists($route)) {
+        if (!defined('CONFIG_ROUTES')) {
+            define('CONFIG_ROUTES', $route);
+        }
+        break;
+    }
+}
+if (!defined('CONFIG_ROUTES')) {
+    fwrite(
+            STDERR, 'You need to set up the project dependencies using config/route.php:' . PHP_EOL . PHP_EOL
+    );
+
+    die(1);
+}
+
+unset($route);
+
+
 $app = new Application();
 $app['debug'] = true;
 /**
@@ -108,7 +127,7 @@ $app->register(new GuzzleServiceProvider(), array(
  */
 if ($app['debug']) {
     $app->register(new MonologServiceProvider(), array(
-        'monolog.logfile' => './log/development.log'
+        'monolog.logfile' => __DIR__ . '/log/development.log'
     ));
 
     $app->extend('monolog', function ($monolog, $app) {
@@ -161,14 +180,12 @@ $app->view(function (array $controllerResult, Request $request) use ($app) {
     return $controllerResult;
 });
 
+$listaRouteLiberada = include_once CONFIG_ROUTES;
 /*
  * Não remover esse trecho
  */
-$app->before(function (Request $request, Application $app) {
+$app->before(function (Request $request, Application $app) use ($listaRouteLiberada) {
     $route = $request->get('_route');
-    $listaRouteLiberada = array(
-        'OPTIONS_url'
-    );
 
     if (!in_array($route, $listaRouteLiberada)) {
         try {
@@ -178,6 +195,7 @@ $app->before(function (Request $request, Application $app) {
             $app['jwt.token'] = null;
             if ($checked) {
                 $app['jwt.token'] = $jwt;
+                $app['jwt.payload'] = $jwtService->getJWTPayload($jwt);
             }
             return $checked;
         } catch (Exception $e) {
