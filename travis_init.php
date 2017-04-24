@@ -1,14 +1,14 @@
 <?php
 
-$configPath = __DIR__ . \DIRECTORY_SEPARATOR .'config' . \DIRECTORY_SEPARATOR;
+$configPath = __DIR__ . \DIRECTORY_SEPARATOR . 'config' . \DIRECTORY_SEPARATOR;
 
-if(\is_dir($configPath) === false){
+if (\is_dir($configPath) === false) {
     \mkdir($configPath);
 }
 
 $template = <<<EOF
 <?php
-        
+
 if (\defined('URL_AUTH_API') === false) {
     \define('URL_AUTH_API', 'http://auth-api.alpha.onyxapis.com/v1/');
 }
@@ -34,5 +34,16 @@ EOF;
 \file_put_contents($configPath . 'urls_apis.php', $template);
 
 print("\n API Config OK.\n");
+
+$templateRoutes = <<<EOF
+<?php
+
+return ['OPTIONS_url'];
+
+EOF;
+
+\file_put_contents($configPath . 'routes.php', $templateRoutes);
+
+print("\n Routes API OK.\n");
 
 exit(0);
