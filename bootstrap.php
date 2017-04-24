@@ -211,8 +211,7 @@ $app->after(function (Request $request, Response $response) {
 
     }
     $response->headers->set('Accept-Encoding', 'GZIP');
-    $response->headers->set('Content-Type', 'application/json');
-    $response->headers->set('Content-Type', 'UTF-8');
+    $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
     $response->headers->set('Access-Control-Allow-Credentials', true);
     $response->headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Origin, X-GitHub-OTP, X-Requested-With');
     $response->headers->set('Access-Control-Allow-Origin', '*');
