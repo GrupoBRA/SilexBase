@@ -1,9 +1,9 @@
 {
     "name": "onyxerp/silexbase",
     "description": "Silex Base para criar API REST para OnyxERP",
-    "version": "1.8.0",
+    "version": "1.9.0",
     "type": "library",
-    "time": "2017-04-19",
+    "time": "2017-04-24",
     "homepage": "https://github.com/BRAConsultoria/SilexBase",
     "license": "proprietary",
     "authors": [
@@ -20,10 +20,10 @@
     "require": {
         "php": ">=5.6",
         "silex/silex": "~2.0",
-        "symfony/config": "*",
-        "symfony/validator": "*",
-        "guzzlehttp/guzzle": "*",
-        "monolog/monolog": "*"
+        "symfony/config": "~3.2",
+        "symfony/validator": "~3.2",
+        "guzzlehttp/guzzle": "~6.2",
+        "monolog/monolog": "~1.22"
     },
     "autoload": {
         "psr-4": {

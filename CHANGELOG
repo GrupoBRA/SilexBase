@@ -1,3 +1,14 @@
+Version 1.9.0:
+Update v1.9.0 Task #54 - SCM - Release v1.9.0
+Merge branch 'bugfix/issue-50' into develop
+fix erro Task #50 - Fix bug in SilexBase
+fix erro na constante __DIR__ Task #50 - Fix bug in SilexBase
+Criando o novo arquivo config Task #50 - Fix bug in SilexBase
+Merge branch 'develop' into bugfix/issue-50
+Issue 51 - Adição em SocialService(PR) (#52)
+Fix bug Task #50 - Fix bug in SilexBase
+Merge tag 'v1.8.0' into develop
+
 Version 1.8.0:
 Release v1.8.0
 Issue 47 - Adição de novos recursos(PR) (#48)
