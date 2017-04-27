@@ -96,7 +96,7 @@ class AccountService
     }
     
     /**
-     * Envia um post ao end-point singup em AccountAPI
+     * Envia um post ao end-point de confirmação de login em AccountAPI
      *
      * @param string $cpf CPF do usuário a ser validado
      * @return array Array com a resposta e o status code
@@ -123,6 +123,55 @@ class AccountService
             }
 
             $response = $this->app['guzzle']->post(\URL_ACCOUNT_API . 'signup/confirm-login/'. $cpf .'/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+                $data = (isset($responseObj['data']) ? $responseObj['data'] : false);
+            } else {
+                $data = [];
+            }
+
+            return [
+                'status'    => $response->getStatusCode(),
+                'response'  => $data
+            ];
+        } catch (Exception $e){
+            throw new \RuntimeException($e->getMessage());
+        }
+    }
+    
+    /**
+     * Envia um post ao end-point de definição/recuperação de senha em AccountAPI
+     *
+     * @param string $cpf CPF do usuário a ser validado
+     * @return array Array com a resposta e o status code
+     * @throws Exception
+     */
+    public function recovery($cpf)
+    {
+        try {
+
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getPayload())) {
+                $conf['body'] = \json_encode($this->getPayload());
+            }
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer ' . $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->post(\URL_ACCOUNT_API . 'recovery/'. $cpf .'/', $conf);
 
             $responseText = $response->getBody()->getContents();
 
