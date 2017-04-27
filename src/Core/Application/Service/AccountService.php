@@ -56,7 +56,6 @@ class AccountService
     public function signup()
     {
         try {
-
             $conf = [
                 'connect_timeout' => 25,
                 'timeout' => 25,
@@ -90,7 +89,7 @@ class AccountService
                 'status'    => $response->getStatusCode(),
                 'response'  => $data
             ];
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
     }
@@ -105,7 +104,6 @@ class AccountService
     public function confirmLogin($cpf)
     {
         try {
-
             $conf = [
                 'connect_timeout' => 10,
                 'timeout' => 10,
@@ -139,7 +137,7 @@ class AccountService
                 'status'    => $response->getStatusCode(),
                 'response'  => $data
             ];
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
     }
@@ -154,7 +152,6 @@ class AccountService
     public function recovery($cpf)
     {
         try {
-
             $conf = [
                 'connect_timeout' => 10,
                 'timeout' => 10,
@@ -188,7 +185,7 @@ class AccountService
                 'status'    => $response->getStatusCode(),
                 'response'  => $data
             ];
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }
     }
