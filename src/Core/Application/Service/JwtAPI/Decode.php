@@ -38,11 +38,49 @@ class Decode extends BaseService
         $payload = \json_decode(\base64_decode(\explode('.', $jwt)[1]), true);
         $apiKey = $payload['data']['app']['apikey'];
 
-        $listaApplication = (new CheckJWT($app, $jwt))->getDadosApp($apiKey);
+        $listaApplication = $this->getDadosApp($apiKey);
 
         $this->response = JWTWrapper::decode($jwt, $listaApplication['data']['apiSecret'], true);
         } catch (\Exception $e){
             return "Token inválido ou expirado.";
+        }
+    }
+    
+    /**
+     * @param string $appId raw
+     *
+     * @return array
+     *
+     * @throws \Exception em caso de receber um status diferente de 200 da AppAPI
+     */
+    public function getDadosApp($appId)
+    {
+        try {
+
+            // check se existe arquivo
+            $filename = \CONFIG_API_ROOT . '/json/apps/' . $appId . '.json';
+
+            if (\file_exists($filename)) {
+                return parent::getApp()['json']->readJsonToArray($filename);
+            }
+
+            $conf = [
+                'timeour' => 5,
+                'verify' => false,
+                'connec_timeout' => 5
+            ];
+
+            $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($response->getBody(), true);
+
+                parent::getApp()['json']->createJSON($responseObj, $filename);
+                return $responseObj['data'];
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception('Falha ao recuperar os dados da app!');
         }
     }
 }

@@ -5,7 +5,6 @@ namespace OnyxERP\Core\Application\Service\JwtAPI;
 use \Exception;
 use \OnyxERP\Core\Application\Service\BaseService;
 use \Silex\Application;
-use const \URL_JWT_API;
 
 /**
  * Encode.
@@ -68,6 +67,44 @@ class Encode extends BaseService
         } catch (Exception $e) {
             $message = sprintf('%s', $e->getMessage());
             $this->exceptionRequest($message);
+        }
+    }
+    
+    /**
+     * @param string $appId raw
+     *
+     * @return array
+     *
+     * @throws \Exception em caso de receber um status diferente de 200 da AppAPI
+     */
+    public function getDadosApp($appId)
+    {
+        try {
+
+            // check se existe arquivo
+            $filename = \CONFIG_API_ROOT . '/json/apps/' . $appId . '.json';
+
+            if (\file_exists($filename)) {
+                return parent::getApp()['json']->readJsonToArray($filename);
+            }
+
+            $conf = [
+                'timeour' => 5,
+                'verify' => false,
+                'connec_timeout' => 5
+            ];
+
+            $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($response->getBody(), true);
+
+                parent::getApp()['json']->createJSON($responseObj, $filename);
+                return $responseObj['data'];
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception('Falha ao recuperar os dados da app!');
         }
     }
 }

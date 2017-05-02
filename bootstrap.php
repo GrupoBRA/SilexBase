@@ -97,6 +97,10 @@ if (!defined('CONFIG_ROUTES')) {
 
 unset($route);
 
+//Path absoluto da raíz da api.
+if (!defined('CONFIG_API_ROOT')) {
+    \define('CONFIG_API_ROOT', __DIR__ .'../../');
+}
 
 $app = new Application();
 $app['debug'] = true;
