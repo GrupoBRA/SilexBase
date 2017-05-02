@@ -5,7 +5,6 @@ namespace OnyxERP\Core\Application\Service\JwtAPI;
 use \Exception;
 use \OnyxERP\Core\Application\Service\BaseService;
 use \Silex\Application;
-use const \URL_JWT_API;
 
 /**
  * Encode.
@@ -20,38 +19,31 @@ use const \URL_JWT_API;
  */
 class Encode extends BaseService
 {
+    const EXPIRATION_SECONDS = 43200;
 
-    /**
-     * Build payload from data
-     *
-     * @param  array $dados
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    private function buildPayload(array $dados)
-    {
-        if (!isset($dados['app']['apikey'])) {
-            throw new \InvalidArgumentException('apikey não informada!');
-        }
-        $body = [
-            'apiKey' => \base64_encode($dados['app']['apikey']),
-            'data' => $dados
-        ];
-        return [
-            'body' => \json_encode($body)
-        ];
-    }
     /**
      *
      * @param string $message
      * @param string $exception
-     * @throws Exception
+     * @throws Exceptio
      */
     private function exceptionRequest($message, $exception = 'Não foi possível decodificar o token de acesso!')
     {
         $this->app['monolog']->error($message);
         throw new \Exception($exception);
     }
+
+    private function encode(array $dados, $secret)
+    {
+        return JWTWrapper::encode(
+            [
+                'expiration_sec' => self::EXPIRATION_SECONDS,
+                'iss' => 'Onyxprev',
+                'data' => $dados,
+            ], $secret
+        );
+    }
+    
     /**
      *
      * @param Application $app
@@ -61,22 +53,58 @@ class Encode extends BaseService
      */
     public function __construct(Application $app, array $dados)
     {
+        parent::__construct($app);
+
         try {
-            parent::__construct($app);
-            $payload = $this->buildPayload($dados);
-            $response = $this->app['guzzle']->post(URL_JWT_API . 'encode/', $payload);
 
-            if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->exceptionRequest($message);
-            }
+            $appId = \base64_decode($dados['apiKey']);
 
-            $responseObj = \json_decode($response->getBody(), true);
+            $dadosApp = $this->getDadosApp($appId);
 
-            $this->response = $responseObj['access_token'];
+            $payload = $dados['data'];
+
+            $this->response = $this->encode($payload, $dadosApp['data']['apiSecret']);
         } catch (Exception $e) {
             $message = sprintf('%s', $e->getMessage());
             $this->exceptionRequest($message);
+        }
+    }
+    
+    /**
+     * @param string $appId raw
+     *
+     * @return array
+     *
+     * @throws \Exception em caso de receber um status diferente de 200 da AppAPI
+     */
+    public function getDadosApp($appId)
+    {
+        try {
+
+            // check se existe arquivo
+            $filename = \CONFIG_API_ROOT . '/json/apps/' . $appId . '.json';
+
+            if (\file_exists($filename)) {
+                return parent::getApp()['json']->readJsonToArray($filename);
+            }
+
+            $conf = [
+                'timeour' => 5,
+                'verify' => false,
+                'connec_timeout' => 5
+            ];
+
+            $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($response->getBody(), true);
+
+                parent::getApp()['json']->createJSON($responseObj, $filename);
+                return $responseObj['data'];
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception('Falha ao recuperar os dados da app!');
         }
     }
 }
