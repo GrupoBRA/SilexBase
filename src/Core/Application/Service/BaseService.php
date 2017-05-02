@@ -128,4 +128,15 @@ class BaseService
     {
         return $this->response;
     }
+
+    public function getApp()
+    {
+        return $this->app;
+    }
+
+    public function setApp(Application $app) 
+    {
+        $this->app = $app;
+        return $this;
+    }
 }

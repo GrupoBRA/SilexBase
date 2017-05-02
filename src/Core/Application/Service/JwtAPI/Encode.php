@@ -20,38 +20,31 @@ use const \URL_JWT_API;
  */
 class Encode extends BaseService
 {
+    const EXPIRATION_SECONDS = 43200;
 
-    /**
-     * Build payload from data
-     *
-     * @param  array $dados
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    private function buildPayload(array $dados)
-    {
-        if (!isset($dados['app']['apikey'])) {
-            throw new \InvalidArgumentException('apikey não informada!');
-        }
-        $body = [
-            'apiKey' => \base64_encode($dados['app']['apikey']),
-            'data' => $dados
-        ];
-        return [
-            'body' => \json_encode($body)
-        ];
-    }
     /**
      *
      * @param string $message
      * @param string $exception
-     * @throws Exception
+     * @throws Exceptio
      */
     private function exceptionRequest($message, $exception = 'Não foi possível decodificar o token de acesso!')
     {
         $this->app['monolog']->error($message);
         throw new \Exception($exception);
     }
+
+    private function encode(array $dados, $secret)
+    {
+        return JWTWrapper::encode(
+            [
+                'expiration_sec' => self::EXPIRATION_SECONDS,
+                'iss' => 'Onyxprev',
+                'data' => $dados,
+            ], $secret
+        );
+    }
+    
     /**
      *
      * @param Application $app
@@ -61,19 +54,17 @@ class Encode extends BaseService
      */
     public function __construct(Application $app, array $dados)
     {
+        parent::__construct($app);
+
         try {
-            parent::__construct($app);
-            $payload = $this->buildPayload($dados);
-            $response = $this->app['guzzle']->post(URL_JWT_API . 'encode/', $payload);
 
-            if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->exceptionRequest($message);
-            }
+            $appId = \base64_decode($dados['apiKey']);
 
-            $responseObj = \json_decode($response->getBody(), true);
+            $dadosApp = $this->getDadosApp($appId);
 
-            $this->response = $responseObj['access_token'];
+            $payload = $dados['data'];
+
+            $this->response = $this->encode($payload, $dadosApp['data']['apiSecret']);
         } catch (Exception $e) {
             $message = sprintf('%s', $e->getMessage());
             $this->exceptionRequest($message);

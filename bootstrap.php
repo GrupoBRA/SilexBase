@@ -189,13 +189,20 @@ $app->before(function (Request $request, Application $app) use ($listaRouteLiber
 
     if (!in_array($route, $listaRouteLiberada)) {
         try {
+
             $jwtService = new JWTService($app);
-            $jwt = $jwtService->getAuthorizationJWT($request);
-            $checked = $jwtService->checkJWT($jwt);
+
+            $jwt        = $jwtService->getAuthorizationJWT($request);
+            $jwtData    = $jwtService->getJWTPayload($jwt);
+            $checked    = \is_array($jwtData);
+
             $app['jwt.token'] = null;
+
             if ($checked) {
                 $app['jwt.token'] = $jwt;
-                $app['jwt.payload'] = $jwtService->getJWTPayload($jwt);
+                $app['jwt.payload'] = $jwtData;
+            } else {
+                throw new \Exception("Token inválido ou expirado.");
             }
             return $checked;
         } catch (Exception $e) {

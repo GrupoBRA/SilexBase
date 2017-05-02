@@ -4,6 +4,8 @@ namespace OnyxERP\Core\Application\Service\JwtAPI;
 
 use \Exception;
 use \OnyxERP\Core\Application\Service\BaseService;
+use OnyxERP\Core\Application\Service\JwtAPI\CheckJWT;
+use OnyxERP\Core\Application\Service\Auth\JWTWrapper;
 use \Silex\Application;
 use const \URL_JWT_API;
 
@@ -33,30 +35,14 @@ class Decode extends BaseService
     public function __construct(Application $app, $jwt)
     {
         try {
-            parent::__construct($app);
-            $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'decode/',
-                [
-                    'connect_timeout' => 10,
-                    'timeout' => 10,
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $jwt
-                    ]
-                ]
-            );
+        $payload = \json_decode(\base64_decode(\explode('.', $jwt)[1]), true);
+        $apiKey = $payload['data']['app']['apikey'];
 
-            if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->app['monolog']->error($message);
-                throw new Exception('Não foi possível decodificar o token de acesso!');
-            }
-            
-            $responseObj = \json_decode($response->getBody(), true);
+        $listaApplication = (new CheckJWT($app, $jwt))->getDadosApp($apiKey);
 
-            $this->response = $responseObj['data'];
-        } catch (Exception $e) {
-            $this->app['monolog']->error($e->getTraceAsString());
-            throw new Exception('Não foi possível decodificar o token de acesso!');
+        $this->response = JWTWrapper::decode($jwt, $listaApplication['data']['apiSecret'], true);
+        } catch (\Exception $e){
+            return "Token inválido ou expirado.";
         }
     }
 }
