@@ -42,6 +42,7 @@ foreach (array(__DIR__ . '/../../../config/urls_apis.php', __DIR__ . '/../../con
         break;
     }
 }
+
 if (!defined('CONFIG_URL_APIS')) {
     fwrite(
             STDERR, 'You need to set up the project dependencies using config/url_apis.php:' . PHP_EOL . PHP_EOL
@@ -78,7 +79,6 @@ if (!defined('COMPOSER_AUTOLOAD')) {
 
 $loader = require COMPOSER_AUTOLOAD;
 
-
 foreach (array(__DIR__ . '/../../../config/routes.php', __DIR__ . '/../../config/routes.php', __DIR__ . '/../config/routes.php', __DIR__ . '/config/routes.php') as $route) {
     if (file_exists($route)) {
         if (!defined('CONFIG_ROUTES')) {
@@ -98,8 +98,8 @@ if (!defined('CONFIG_ROUTES')) {
 unset($route);
 
 //Path absoluto da raíz da api.
-if (!defined('CONFIG_API_ROOT')) {
-    \define('CONFIG_API_ROOT', __DIR__ .'../../');
+if (\defined('CONFIG_API_ROOT') === false) {
+    \define('CONFIG_API_ROOT', \realpath(__DIR__ .'../../../'));
 }
 
 $app = new Application();
@@ -203,12 +203,11 @@ $app->before(function (Request $request, Application $app) use ($listaRouteLiber
             $app['jwt.token'] = null;
 
             if ($checked) {
-                $app['jwt.token'] = $jwt;
+                $app['jwt.token']   = $jwt;
                 $app['jwt.payload'] = $jwtData;
             } else {
                 throw new \Exception("Token inválido ou expirado.");
             }
-            return $checked;
         } catch (Exception $e) {
             return new JsonResponse([
                 'error' => $e->getMessage()

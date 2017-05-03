@@ -83,6 +83,15 @@ class SocialService
     {
         $this->app['monolog']->debug($needle);
         try {
+
+            //nome do arquivo em cache
+            $filename = \CONFIG_API_ROOT . '/json/search-pf/' . \base64_encode($needle) . '.json';
+
+            //verifica se já existe no cache
+            if (\file_exists($filename)) {
+                return $this->app['json']->readJsonToArray($filename);
+            }
+
             $guzzle = $this->app['guzzle'];
             $url = URL_SOCIAL_API . 'pessoa-fisica/search/' . \preg_replace('/[\/]{1,}/', '', $needle) .'/';
 
@@ -102,6 +111,9 @@ class SocialService
             if ($response->getStatusCode() === 200) {
                 $responseObj = \json_decode($responseText, true);
 
+                //salva no cache
+                $this->app['json']->createJSON($responseObj['data'], $filename);
+                
                 return $responseObj['data'];
             } else {
                 return false;

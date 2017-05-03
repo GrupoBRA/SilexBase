@@ -5,6 +5,7 @@ namespace OnyxERP\Core\Application\Service\JwtAPI;
 use \Exception;
 use \OnyxERP\Core\Application\Service\BaseService;
 use \Silex\Application;
+use OnyxERP\Core\Application\Service\Auth\JWTWrapper;
 
 /**
  * Encode.
@@ -57,12 +58,16 @@ class Encode extends BaseService
 
         try {
 
-            $appId = \base64_decode($dados['apiKey']);
+            //Id da APP que assinou o Jwt
+            $appId = $dados['app']['apikey'];
 
+            //Dados da APP supra citada
             $dadosApp = $this->getDadosApp($appId);
 
-            $payload = $dados['data'];
+            //Dados do novo Jwt a ser gerado
+            $payload = $dados;
 
+            //seta o resultado na response
             $this->response = $this->encode($payload, $dadosApp['data']['apiSecret']);
         } catch (Exception $e) {
             $message = sprintf('%s', $e->getMessage());
@@ -89,9 +94,9 @@ class Encode extends BaseService
             }
 
             $conf = [
-                'timeour' => 5,
+                'timeout' => 5,
                 'verify' => false,
-                'connec_timeout' => 5
+                'connect_timeout' => 5
             ];
 
             $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
@@ -100,11 +105,11 @@ class Encode extends BaseService
                 $responseObj = \json_decode($response->getBody(), true);
 
                 parent::getApp()['json']->createJSON($responseObj, $filename);
-                return $responseObj['data'];
+                return $responseObj;
             }
 
         } catch (\Exception $e) {
-            throw new \Exception('Falha ao recuperar os dados da app!');
+            throw new \Exception('Falha ao recuperar a assinatura da app!');
         }
     }
 }

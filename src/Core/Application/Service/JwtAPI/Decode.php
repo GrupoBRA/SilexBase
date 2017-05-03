@@ -68,9 +68,9 @@ class Decode extends BaseService
             }
 
             $conf = [
-                'timeour' => 5,
+                'timeout' => 5,
                 'verify' => false,
-                'connec_timeout' => 5
+                'connect_timeout' => 5
             ];
 
             $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
@@ -79,11 +79,11 @@ class Decode extends BaseService
                 $responseObj = \json_decode($response->getBody(), true);
 
                 parent::getApp()['json']->createJSON($responseObj, $filename);
-                return $responseObj['data'];
+                return $responseObj;
             }
 
         } catch (\Exception $e) {
-            throw new \Exception('Falha ao recuperar os dados da app!');
+            throw new \Exception('Falha ao recuperar a assinatura da app!');
         }
     }
 }
