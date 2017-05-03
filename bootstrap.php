@@ -191,6 +191,9 @@ $listaRouteLiberada = include_once CONFIG_ROUTES;
 $app->before(function (Request $request, Application $app) use ($listaRouteLiberada) {
     $route = $request->get('_route');
 
+    //adiciona a rota OPTION / à lista branca de todas as APIs.
+    \array_push($listaRouteLiberada, 'OPTIONS_url');
+
     if (!in_array($route, $listaRouteLiberada)) {
         try {
 
