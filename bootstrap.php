@@ -210,8 +210,9 @@ $app->before(function (Request $request, Application $app) use ($listaRouteLiber
             }
         } catch (Exception $e) {
             return new JsonResponse([
-                'error' => $e->getMessage()
-            ]);
+                'status' => false,
+                'error' => $e->getMessage(),
+            ], 403);
         }
     }
 });
