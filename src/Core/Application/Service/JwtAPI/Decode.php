@@ -34,7 +34,10 @@ class Decode extends BaseService
      */
     public function __construct(Application $app, $jwt)
     {
+        parent::__construct($app, $jwt);
+
         try {
+
         $payload = \json_decode(\base64_decode(\explode('.', $jwt)[1]), true);
         $apiKey = $payload['data']['app']['apikey'];
 
@@ -45,7 +48,7 @@ class Decode extends BaseService
             return "Token inválido ou expirado.";
         }
     }
-    
+
     /**
      * @param string $appId raw
      *
