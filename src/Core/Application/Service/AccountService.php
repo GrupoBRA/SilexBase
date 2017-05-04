@@ -168,7 +168,7 @@ class AccountService
                 ];
             }
 
-            $response = $this->app['guzzle']->post(\URL_ACCOUNT_API . 'recovery/'. $cpf .'/', $conf);
+            $response = $this->app['guzzle']->put(\URL_ACCOUNT_API . 'change-pass/'. $cpf .'/', $conf);
 
             $responseText = $response->getBody()->getContents();
 
@@ -179,6 +179,55 @@ class AccountService
                 $data = (isset($responseObj['data']) ? $responseObj['data'] : false);
             } else {
                 $data = [];
+            }
+
+            return [
+                'status'    => $response->getStatusCode(),
+                'response'  => $data
+            ];
+        } catch (Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+    }
+    
+    /**
+     * Envia um post para v2/login/ em AccountAPI. Requer JWT e payload data
+     * 
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function login()
+    {
+        try {
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getPayload())) {
+                $conf['body'] = \json_encode($this->getPayload());
+            }
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer ' . $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->post(\URL_ACCOUNT_APIV2 . 'login/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+                $data = $responseObj;
+            } else {
+                $data = [
+                    'logado' => false,
+                ];
             }
 
             return [

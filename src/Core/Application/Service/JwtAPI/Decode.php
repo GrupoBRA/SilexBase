@@ -4,6 +4,8 @@ namespace OnyxERP\Core\Application\Service\JwtAPI;
 
 use \Exception;
 use \OnyxERP\Core\Application\Service\BaseService;
+use OnyxERP\Core\Application\Service\JwtAPI\CheckJWT;
+use OnyxERP\Core\Application\Service\Auth\JWTWrapper;
 use \Silex\Application;
 use const \URL_JWT_API;
 
@@ -32,31 +34,56 @@ class Decode extends BaseService
      */
     public function __construct(Application $app, $jwt)
     {
+        parent::__construct($app, $jwt);
+
         try {
-            parent::__construct($app);
-            $response = $this->app['guzzle']->get(
-                URL_JWT_API . 'decode/',
-                [
-                    'connect_timeout' => 10,
-                    'timeout' => 10,
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $jwt
-                    ]
-                ]
-            );
 
-            if ($response->getStatusCode() !== 200) {
-                $message = sprintf('%s - %s', $response->getStatusCode(), $response->getReasonPhrase());
-                $this->app['monolog']->error($message);
-                throw new Exception('Não foi possível decodificar o token de acesso!');
+        $payload = \json_decode(\base64_decode(\explode('.', $jwt)[1]), true);
+        $apiKey = $payload['data']['app']['apikey'];
+
+        $listaApplication = $this->getDadosApp($apiKey);
+
+        $this->response = JWTWrapper::decode($jwt, $listaApplication['data']['apiSecret'], true);
+        } catch (\Exception $e){
+            return "Token inválido ou expirado.";
+        }
+    }
+
+    /**
+     * @param string $appId raw
+     *
+     * @return array
+     *
+     * @throws \Exception em caso de receber um status diferente de 200 da AppAPI
+     */
+    public function getDadosApp($appId)
+    {
+        try {
+
+            // check se existe arquivo
+            $filename = \CONFIG_API_ROOT . '/json/apps/' . $appId . '.json';
+
+            if (\file_exists($filename)) {
+                return parent::getApp()['json']->readJsonToArray($filename);
             }
-            
-            $responseObj = \json_decode($response->getBody(), true);
 
-            $this->response = $responseObj['data'];
-        } catch (Exception $e) {
-            $this->app['monolog']->error($e->getTraceAsString());
-            throw new Exception('Não foi possível decodificar o token de acesso!');
+            $conf = [
+                'timeout' => 5,
+                'verify' => false,
+                'connect_timeout' => 5
+            ];
+
+            $response = parent::getApp()['guzzle']->get(URL_APP_API . 'app/' . \base64_encode($appId) . '/', $conf);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($response->getBody(), true);
+
+                parent::getApp()['json']->createJSON($responseObj, $filename);
+                return $responseObj;
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception('Falha ao recuperar a assinatura da app!');
         }
     }
 }

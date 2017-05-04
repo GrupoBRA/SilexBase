@@ -42,6 +42,7 @@ foreach (array(__DIR__ . '/../../../config/urls_apis.php', __DIR__ . '/../../con
         break;
     }
 }
+
 if (!defined('CONFIG_URL_APIS')) {
     fwrite(
             STDERR, 'You need to set up the project dependencies using config/url_apis.php:' . PHP_EOL . PHP_EOL
@@ -78,7 +79,6 @@ if (!defined('COMPOSER_AUTOLOAD')) {
 
 $loader = require COMPOSER_AUTOLOAD;
 
-
 foreach (array(__DIR__ . '/../../../config/routes.php', __DIR__ . '/../../config/routes.php', __DIR__ . '/../config/routes.php', __DIR__ . '/config/routes.php') as $route) {
     if (file_exists($route)) {
         if (!defined('CONFIG_ROUTES')) {
@@ -97,6 +97,10 @@ if (!defined('CONFIG_ROUTES')) {
 
 unset($route);
 
+//Path absoluto da raíz da api.
+if (\defined('CONFIG_API_ROOT') === false) {
+    \define('CONFIG_API_ROOT', \realpath(__DIR__ .'../../../'));
+}
 
 $app = new Application();
 $app['debug'] = true;
@@ -187,21 +191,31 @@ $listaRouteLiberada = include_once CONFIG_ROUTES;
 $app->before(function (Request $request, Application $app) use ($listaRouteLiberada) {
     $route = $request->get('_route');
 
+    //adiciona a rota OPTION / à lista branca de todas as APIs.
+    \array_push($listaRouteLiberada, 'OPTIONS_url');
+
     if (!in_array($route, $listaRouteLiberada)) {
         try {
+
             $jwtService = new JWTService($app);
-            $jwt = $jwtService->getAuthorizationJWT($request);
-            $checked = $jwtService->checkJWT($jwt);
+
+            $jwt        = $jwtService->getAuthorizationJWT($request);
+            $jwtData    = $jwtService->getJWTPayload($jwt);
+            $checked    = \is_array($jwtData);
+
             $app['jwt.token'] = null;
+
             if ($checked) {
-                $app['jwt.token'] = $jwt;
-                $app['jwt.payload'] = $jwtService->getJWTPayload($jwt);
+                $app['jwt.token']   = $jwt;
+                $app['jwt.payload'] = $jwtData;
+            } else {
+                throw new \Exception("Token inválido ou expirado.");
             }
-            return $checked;
         } catch (Exception $e) {
             return new JsonResponse([
-                'error' => $e->getMessage()
-            ]);
+                'status' => false,
+                'error' => $e->getMessage(),
+            ], 403);
         }
     }
 });
