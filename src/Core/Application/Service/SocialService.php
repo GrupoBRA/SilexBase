@@ -112,9 +112,11 @@ class SocialService
                 $responseObj = \json_decode($responseText, true);
 
                 //salva no cache
-                $this->app['json']->createJSON($responseObj['data'], $filename);
+                if(isset($responseObj['data']) === true){
+                    $this->app['json']->createJSON($responseObj['data'], $filename);
+                }
                 
-                return $responseObj['data'];
+                return (isset($responseObj['data']) ? $responseObj['data'] : $responseObj);
             } else {
                 return false;
             }
