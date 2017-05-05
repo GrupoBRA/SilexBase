@@ -1,3 +1,7 @@
+Version 1.11.2:
+Update v1.11.2
+Issue 71 - Correção no SocialService (https://github.com/BRAConsultoria/SilexBase/issues/75)
+
 Version 1.11.1:
 Update v1.11.1
 Issue 73 - Criação do SimuladorService (https://github.com/BRAConsultoria/SilexBase/issues/73)
