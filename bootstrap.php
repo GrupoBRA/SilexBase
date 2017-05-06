@@ -221,9 +221,18 @@ $app->before(function (Request $request, Application $app) use ($listaRouteLiber
 });
 
 $app->after(function (Request $request, Response $response) {
-    if ($request) {
 
+    $headers = $request->headers;
+
+    if(!empty($headers->get('user-agent'))){
+        if(\preg_match('/^[Mozilla\/]{8}/', $headers->get('user-agent'))){
+            $simpleResponse = \json_decode($response->getContent());
+            if(\json_last_error() < 1){
+                $response->setContent(\json_encode($simpleResponse, \JSON_PRETTY_PRINT));
+            }
+        }
     }
+    
     $response->headers->set('Accept-Encoding', 'GZIP');
     $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
     $response->headers->set('Access-Control-Allow-Credentials', true);
