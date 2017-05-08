@@ -61,7 +61,7 @@ class Decode extends BaseService
         try {
 
             // check se existe arquivo
-            $filename = \CONFIG_API_ROOT . '/json/apps/' . $appId . '.json';
+            $filename = \CACHE_PATH . '/AppAPI/apps/' . $appId . '.json';
 
             if (\file_exists($filename)) {
                 return parent::getApp()['json']->readJsonToArray($filename);
