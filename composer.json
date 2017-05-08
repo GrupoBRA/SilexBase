@@ -1,15 +1,15 @@
 {
     "name": "onyxerp/silexbase",
     "description": "Silex Base para criar API REST para OnyxERP",
-    "version": "1.12.0",
+    "version": "1.13.0",
     "type": "library",
     "time": "2017-05-06",
     "homepage": "https://github.com/BRAConsultoria/SilexBase",
     "license": "proprietary",
     "authors": [
-	{
-            "name": "Community contributors",
-            "homepage": "https://github.com/BRAConsultoria/SilexBase/graphs/contributors"
+		{
+			"name": "Community contributors",
+			"homepage": "https://github.com/BRAConsultoria/SilexBase/graphs/contributors"
         }
     ],
     "support": {

@@ -99,8 +99,15 @@ unset($route);
 
 //Path absoluto da raíz da api.
 if (\defined('CONFIG_API_ROOT') === false) {
-    \define('CONFIG_API_ROOT', \realpath(__DIR__ .'../../../'));
+    \define('CONFIG_API_ROOT', \realpath(__DIR__ .'../../'));
+    \define('CACHE_PATH', \realpath(CONFIG_API_ROOT .'/Cache/'));
 }
+
+//Constante com o path do cache compartilhado das APIs, no mesmo nível delas
+if (\defined('CACHE_PATH') === false) {
+    \define('CACHE_PATH', \realpath(\CONFIG_API_ROOT .'/../Cache/'));
+}
+
 
 $app = new Application();
 $app['debug'] = true;

@@ -85,7 +85,7 @@ class SocialService
         try {
 
             //nome do arquivo em cache
-            $filename = \CONFIG_API_ROOT . '/json/search-pf/' . \base64_encode($needle) . '.json';
+            $filename = \CACHE_PATH . '/SocialAPI/search-pf/' . \base64_encode($needle) . '.json';
 
             //verifica se já existe no cache
             if (\file_exists($filename)) {
@@ -93,6 +93,7 @@ class SocialService
             }
 
             $guzzle = $this->app['guzzle'];
+
             $url = URL_SOCIAL_API . 'pessoa-fisica/search/' . \preg_replace('/[\/]{1,}/', '', $needle) .'/';
 
             $response = $guzzle->get($url, [
@@ -134,6 +135,7 @@ class SocialService
     public function inserir(array $payload)
     {
         try {
+
             $conf = [
                 'connect_timeout' => 10,
                 'timeout' => 10,
@@ -175,6 +177,7 @@ class SocialService
     public function updatePfTable($table, $id, $data)
     {
         try {
+
             $conf = [
                 'connect_timeout' => 10,
                 'timeout' => 10,
