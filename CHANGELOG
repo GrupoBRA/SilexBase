@@ -1,3 +1,7 @@
+Version 1.14.0:
+Update v1.14.0
+Issue 81 - Alteração AccountService (https://github.com/BRAConsultoria/SilexBase/issues/81)
+
 Version 1.13.0:
 Update v1.13.0
 Issue 79 - Refatorar cache de apps no SilexBase (https://github.com/BRAConsultoria/SilexBase/issues/79)
