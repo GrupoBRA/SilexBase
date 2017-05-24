@@ -250,6 +250,57 @@ class SocialService
         }
     }
     
+    /**
+     * 
+     * @param type $pfCod
+     * @return array
+     * @throws Exception
+     */
+    public function getPessoaFisica($pfCod) 
+    {
+        try {
+
+            $url = URL_SOCIAL_API . 'pessoa-fisica/' . $pfCod .'/';
+            $this->app['monolog']->debug('requisição HTTP para: '. $url);
+
+            //nome do arquivo em cache
+            $filename = \CACHE_PATH . '/SocialAPI/json/pf/' . $pfCod . '.json';
+
+            //verifica se já existe no cache
+            if (\file_exists($filename)) {
+                $this->app['monolog']->debug($pfCod .' recuperado do cache');
+                return $this->app['json']->readJsonToArray($filename);
+            }
+
+            $guzzle = $this->app['guzzle'];
+
+            $response = $guzzle->get($url, [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions'    => false,
+            ]);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                //salva no cache
+                if(isset($responseObj['data']) === true){
+                    $this->app['json']->createJSON($responseObj['data'], $filename);
+                }
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : $responseObj);
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível obter os dados do pessoa física');
+        }
+    }
+
     public function getJwt()
     {
         return $this->jwt;
