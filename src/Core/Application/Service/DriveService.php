@@ -53,4 +53,43 @@ class DriveService extends BaseService
             
         return [];
     }
+    
+    /**
+     * Método para upload de arquivos para DriveAPI
+     * 
+     * @param int $refCod
+     * @param int $appModCod
+     * @return array|boolean 
+     * @throws Exception
+     */
+    public function upload($refCod, $appModCod = 7)
+    {
+        try {
+
+            $url = URL_DRIVE_API . $refCod .'/modulo/'. $appModCod .'/';
+
+            $confs = [
+                'timeout'       => '20',
+                'exceptions'    => false,
+                'headers'       => [
+                    'Authorization' => "Bearer ". $this->getJwt()
+                ],
+                'body' => \json_encode($this->getPayload())
+            ];
+
+            $response = $this->guzzle->post($url, $confs);
+
+            $responseText = $response->getBody()->getContents();
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return $responseObj['data'];
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível fazer o upload para DriveAPI!!');
+        }
+    }
 }
