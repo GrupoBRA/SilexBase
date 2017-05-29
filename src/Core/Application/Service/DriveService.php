@@ -77,7 +77,7 @@ class DriveService extends BaseService
                 'body' => \json_encode($this->getPayload())
             ];
 
-            $response = $this->guzzle->post($url, $confs);
+            $response = $this->app['guzzle']->post($url, $confs);
 
             $responseText = $response->getBody()->getContents();
 
