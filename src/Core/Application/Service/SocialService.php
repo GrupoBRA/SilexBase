@@ -300,6 +300,60 @@ class SocialService
             throw new Exception('Não foi possível obter os dados do pessoa física');
         }
     }
+    
+    /**
+     * Envia uma requisição GET ao end-point responsável pela recuperação de 
+     * informações pessoais de um usuário em SocialAPI
+     *
+     * @return mixed Array com a resposta ou Boolean false
+     * @throws Exception
+     */
+    public function getInfoAccount($pfId)
+    {
+        try {
+
+            //nome do arquivo em cache
+            $filename = \CACHE_PATH . '/SocialAPI/json/info-account/' . $pfId . '.json';
+
+            //verifica se já existe no cache
+            if (\file_exists($filename)) {
+                return $this->app['json']->readJsonToArray($filename);
+            }
+
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer '. $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->get(URL_SOCIAL_API .'pessoa-fisica/info-account/'. $pfId .'/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                //salva no cache
+                if(isset($responseObj['data']) === true){
+                    $this->app['json']->createJSON($responseObj['data'], $filename);
+                }
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : false);
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("Falha ao acessar a SocialAPI.");
+        }
+    }
 
     public function getJwt()
     {
