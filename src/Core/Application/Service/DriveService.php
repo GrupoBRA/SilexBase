@@ -77,8 +77,43 @@ class DriveService extends BaseService
                 'body' => \json_encode($this->getPayload())
             ];
 
-            $response = $this->guzzle->post($url, $confs);
+            $response = $this->app['guzzle']->post($url, $confs);
 
+            $responseText = $response->getBody()->getContents();
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return $responseObj['data'];
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível fazer o upload para DriveAPI!!');
+        }
+    }
+    /**
+     * Método de acesso ao end-point GET /v1/{ref_cod}/modulo/{app_mod_cod}/
+     * 
+     * @return array
+     * @throws Exception Em caso de erro não tratável
+     */
+    public function getArquivosUpload($refCod, $appModCod)
+    {
+        try {
+
+            $conf = [
+                'body' => $this->getPayload(),
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer ' . $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->get(URL_DRIVE_API . $refCod . '/modulo/' . $appModCod . '/', $conf);
             $responseText = $response->getBody()->getContents();
 
             if ($response->getStatusCode() === 200) {

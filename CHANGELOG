@@ -1,3 +1,18 @@
+Version 1.21.1:
+SCM - Release v1.21.1
+
+Version 1.21.0:
+Update v1.21.0
+Issue 96 - Criação VersaoRegistroService  (https://github.com/BRAConsultoria/SilexBase/issues/96)
+
+Version 1.20.0:
+Update v1.20.0
+Issue 94 - Enhancement no DriveService  (https://github.com/BRAConsultoria/SilexBase/issues/94)
+
+Version 1.19.1:
+Update v1.19.1
+Correção de bug no DriveService
+
 Version 1.19.0:
 Update v1.19.0
 Issue 91 - Enhancement no DriveService  (https://github.com/BRAConsultoria/SilexBase/issues/91)
