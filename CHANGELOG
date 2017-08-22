@@ -1,3 +1,7 @@
+Version 1.25.0:
+Update v1.25.0
+Adição de novo método no FlushService.
+
 Version 1.24.0:
 Update v1.24.0
 Adição de suporte ao método PATCH em todas as APIs Silex-based.
