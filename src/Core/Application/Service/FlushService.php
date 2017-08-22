@@ -87,6 +87,34 @@ class FlushService
             'arquivos' => $removidos
         ];
     }
+    /**
+     * Remove os arquivos que forem encontrados nos paths informados, com as
+     * respectivas ids.
+     * 
+     * @return type
+     * @throws Exception Se não tiver permissão de escrita em algum arquivo
+     */
+    public function flushAbsolutePath()
+    {
+        $removidos = [];
+        $total = 0;
+
+        foreach ($this->paths as $path) {
+            foreach($this->ids as $id){
+                $filePath = $this->cachePath .'/'. $this->api .'/'. $path .'/'. $id;
+                if(\is_file($filePath)){
+                    \unlink($filePath);
+                    \array_push($removidos, $filePath);
+                    $total++;
+                }
+            }
+        }
+
+        return [
+            'total' => $total,
+            'arquivos' => $removidos
+        ];
+    }
 
     /**
      * Adiciona uma id à lista de ids a serem buscados para remoção de cache
