@@ -44,11 +44,7 @@ foreach (array(__DIR__ . '/../../../config/urls_apis.php', __DIR__ . '/../../con
 }
 
 if (!defined('CONFIG_URL_APIS')) {
-    fwrite(
-            STDERR, 'You need to set up the project dependencies using config/url_apis.php:' . PHP_EOL . PHP_EOL
-    );
-
-    die(1);
+    exit('You need to set up the project dependencies using config/url_apis.php:' . PHP_EOL . PHP_EOL);
 }
 
 unset($config);
@@ -68,10 +64,9 @@ foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../../autoload.ph
 unset($file);
 
 if (!defined('COMPOSER_AUTOLOAD')) {
-    fwrite(
-            STDERR, 'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
-            '    composer install' . PHP_EOL . PHP_EOL .
-            'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    exit('You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
     );
 
     die(1);
@@ -88,11 +83,7 @@ foreach (array(__DIR__ . '/../../../config/routes.php', __DIR__ . '/../../config
     }
 }
 if (!defined('CONFIG_ROUTES')) {
-    fwrite(
-            STDERR, 'You need to set up the project dependencies using config/routes.php:' . PHP_EOL . PHP_EOL
-    );
-
-    die(1);
+    exit('You need to set up the project dependencies using config/routes.php:' . PHP_EOL . PHP_EOL);
 }
 
 unset($route);
@@ -245,7 +236,7 @@ $app->after(function (Request $request, Response $response) {
     $response->headers->set('Access-Control-Allow-Credentials', true);
     $response->headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Origin, X-GitHub-OTP, X-Requested-With');
     $response->headers->set('Access-Control-Allow-Origin', '*');
-    $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,HEAD,DELETE,PUT,OPTIONS');
+    $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS');
 });
 
 /*
