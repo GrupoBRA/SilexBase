@@ -341,6 +341,104 @@ class SocialService
             throw new \Exception("Falha ao acessar a SocialAPI.");
         }
     }
+    
+    public function getPfCodById(string $pfId)
+    {
+        try {
+
+            //nome do arquivo em cache
+            $filename = \CACHE_PATH . '/SocialAPI/json/pf-id-cod/' . $pfId . '.json';
+
+            //verifica se já existe no cache
+            if (\file_exists($filename)) {
+                $pf = $this->app['json']->readJsonToArray($filename);
+                return $pf['pf_cod'];
+            }
+
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer '. $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->get(URL_SOCIAL_API .'pf/cod/'. $pfId .'/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                //salva no cache
+                if(isset($responseObj['data']) === true){
+                    $pfCod = $responseObj['data'];
+                    $this->app['json']->createJSON(['pf_cod' => $pfCod, 'pf_id' => $pfId], $filename);
+                }
+
+                return $pfCod;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("Falha ao acessar a SocialAPI.");
+        }
+    }
+
+    public function getPfIdByCod(int $pfCod)
+    {
+        try {
+
+            //nome do arquivo em cache
+            $filename = \CACHE_PATH . '/SocialAPI/json/pf-cod-id/' . $pfCod . '.json';
+
+            //verifica se já existe no cache
+            if (\file_exists($filename)) {
+                $pf = $this->app['json']->readJsonToArray($filename);
+                return $pf['pf_id'];
+            }
+
+            $conf = [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions' => false
+            ];
+
+            if (!empty($this->getJwt())) {
+                $conf['headers'] = [
+                    'Authorization' => 'Bearer '. $this->getJwt(),
+                ];
+            }
+
+            $response = $this->app['guzzle']->get(URL_SOCIAL_API .'pf/id/'. $pfCod .'/', $conf);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                //salva no cache
+                if(isset($responseObj['data']) === true){
+                    $pfId = $responseObj['data'];
+                    $this->app['json']->createJSON(['pf_cod' => $pfCod, 'pf_id' => $pfId], $filename);
+                }
+
+                return $pfId;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("Falha ao acessar a SocialAPI.");
+        }
+    }
 
     public function getJwt()
     {

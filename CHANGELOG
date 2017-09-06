@@ -1,3 +1,7 @@
+Version 1.26.0:
+Update v1.26.0
+Adição dos métodos de interface de acesso aos end-points responsável pelo intercambio entre pfCod e pfId
+
 Version 1.25.1:
 Update v1.25.1
 Remoção de cache no search-pf
