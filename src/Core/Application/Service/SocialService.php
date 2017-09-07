@@ -189,7 +189,7 @@ class SocialService
 
                 return (isset($responseObj['data']) ? $responseObj['data'] : false);
             } else {
-                return false;
+                return ['status' => $response->getStatusCode()];
             }
         } catch (\Exception $e) {
             throw new \Exception("Falha ao atualizar $table!");
@@ -439,6 +439,93 @@ class SocialService
             throw new \Exception("Falha ao acessar a SocialAPI.");
         }
     }
+    
+
+    /**
+     * Envia uma requisição do tipo GET ao end-point em SocialAPI responsável 
+     * pela listagem de documentos de uma pessoa física por tipo 
+     * 
+     * @param type $pfCod
+     * @param type $tipo identidade|ctps|titulo
+     * @return array
+     * @throws Exception
+     */
+    public function getPfDocumentoTipo($pfCod, $tipo)
+    {
+        $this->app['monolog']->debug($pfCod .' - '. $tipo);
+        try {
+
+            $guzzle = $this->app['guzzle'];
+
+            $url = URL_SOCIAL_API . 'pessoa-fisica/documentos/'. $pfCod .'/tipo/'. $tipo .'/';
+
+            $response = $guzzle->get($url, [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions'    => false,
+                'headers'       => [
+                    'Authorization' => "Bearer ". $this->getJwt()
+                ]
+            ]);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : $responseObj);
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível obter os dados!');
+        }
+    }
+
+    /**
+     * Envia uma requisição do tipo GET ao end-point em SocialAPI responsável 
+     * pela listagem de todos os documentos de uma pessoa física
+     * 
+     * @param type $pfCod
+     * @param type $tipo identidade|ctps|titulo
+     * @return array
+     * @throws Exception
+     */
+    public function getPfDocumentos($pfCod)
+    {
+        $this->app['monolog']->debug($pfCod);
+        try {
+
+            $guzzle = $this->app['guzzle'];
+
+            $url = URL_SOCIAL_API . 'pessoa-fisica/documentos/'. $pfCod .'/';
+
+            $response = $guzzle->get($url, [
+                'connect_timeout' => 10,
+                'timeout' => 10,
+                'exceptions'    => false,
+                'headers'       => [
+                    'Authorization' => "Bearer ". $this->getJwt()
+                ]
+            ]);
+
+            $responseText = $response->getBody()->getContents();
+
+            $this->app['monolog']->debug($responseText);
+
+            if ($response->getStatusCode() === 200) {
+                $responseObj = \json_decode($responseText, true);
+
+                return (isset($responseObj['data']) ? $responseObj['data'] : $responseObj);
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Não foi possível obter os dados!');
+        }
+    }    
 
     public function getJwt()
     {

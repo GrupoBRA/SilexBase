@@ -1,3 +1,7 @@
+Version 1.27.0:
+Update v1.27.0
+Adição dos métodos de interface de acesso aos end-points responsável pela listagem de documentos de pessoa física
+
 Version 1.26.0:
 Update v1.26.0
 Adição dos métodos de interface de acesso aos end-points responsável pelo intercambio entre pfCod e pfId
